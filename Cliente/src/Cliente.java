@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.*;
 import java.io.File;
+import java.util.LinkedList;
 
 public class Cliente {
 	
@@ -32,30 +33,39 @@ public class Cliente {
 		return series_csv;
 	}
 	//Funcao para requisitar a expressão do servidor de expressoes
-	static public String get_expression(){
+	static public LinkedList<String> get_expression(){
 		
-		String expression ="P1_CLOSE > P2_OPEN";
-		return expression; 
-	
+		LinkedList<String> exp_list = new LinkedList<String>();
+		
+		exp_list.add("Exp 1");
+		exp_list.add("Exp 2");
+		exp_list.add("Exp 3");
+		exp_list.add("Exp 4");
+		
+		return exp_list; 
 	}
 	
 	
 	public static void main(String args[]) throws UnknownHostException, IOException{
 		
 		List<File> series_csv = get_series();
-		String expression = get_expression();
+		LinkedList<String> exp_list = get_expression();
 		
 		/* EFETUAR O BROADCAST PARA OBTER O IP DAS MÁQUINAS LIVRES E ENVIAR AS REQUISIÇÕES PARA
 		 * AS REFERENTES MÁQUINAS*/
 		
 		Socket socket = new Socket("localhost", 10000);
-		
+		String expression;
 		OutputStream out = socket.getOutputStream();
 		ObjectOutputStream out_object = new ObjectOutputStream(out);
+		System.out.println(exp_list.isEmpty());
 		
-		
-		out_object.writeObject(series_csv); out_object.flush();
-		out_object.writeObject(expression); out_object.flush();
+		while(!exp_list.isEmpty()){
+			expression = exp_list.pollFirst();
+			System.out.println(expression);
+			out_object.writeObject(series_csv); out_object.flush();
+			out_object.writeObject(expression); out_object.flush();
+		}
 		
 		try{
 			InputStream is = socket.getInputStream();

@@ -36,10 +36,14 @@ public class serverTest {
 				Socket socket = server.accept();
 				reader = socket.getInputStream();
 				ObjectInputStream read_object = new ObjectInputStream(reader);
-				List<File> series = (List<File>)read_object.readObject();
-				open_series_list(series);
-				String expression = (String)read_object.readObject();
-				System.out.println(expression);
+				
+				while(socket.isConnected()){
+					List<File> series = (List<File>)read_object.readObject();
+					open_series_list(series);
+					String expression = (String)read_object.readObject();
+					System.out.println(expression);
+				}
+				
 			}
 			
 		} catch (IOException e) {
