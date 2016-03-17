@@ -13,6 +13,12 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class MathResponse {
+	
+	List<CSVRecord> records;
+	private double saldoInicial = 1000;
+	private ScriptEngineManager factory = new ScriptEngineManager();
+    private ScriptEngine engine = factory.getEngineByName("JavaScript");
+	
     public void setup(){
     	try {
     		String fileName = "C:\\Users\\geoinformacao\\Downloads\\table.csv";
@@ -28,11 +34,8 @@ public class MathResponse {
 		
 		
     }
-    List<CSVRecord> records;
-	private double saldoInicial = 1000;
-	private ScriptEngineManager factory = new ScriptEngineManager();
-    private ScriptEngine engine = factory.getEngineByName("JavaScript");
-	private boolean isToBuy(List<CSVRecord> records2, int i, String formula) {
+    
+    private boolean isToBuy(List<CSVRecord> records2, int i, String formula) {
 		int n = records2.size();
 		if(i + 4 >= n  ){
 			return false;

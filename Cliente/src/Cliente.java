@@ -15,6 +15,11 @@ import java.lang.*;
 import java.io.File;
 import java.util.LinkedList;
 
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 public class Cliente {
 	
 	static public List<File> get_series() throws IOException{
