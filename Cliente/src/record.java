@@ -21,7 +21,7 @@ public class record {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new RuntimeException("erro carga dados");
+			throw new RuntimeException("Erro carga dados");
 		}
 	}
 	

@@ -15,15 +15,24 @@ import java.lang.*;
 import java.io.File;
 import java.util.LinkedList;
 
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import java.net.*;
-
 public class Cliente {
 	
-	//Funcao para simular a expressão do servidor de expressoes
+	static public List<File> get_series() throws IOException{
+		
+		List<File> series_csv = new ArrayList<File>();
+		File read_serie;
+		String path;
+		
+		for(int i=1;i<4;i++){
+			path = "d:\\bolsa\\Serie" + Integer.toString(i) + ".csv";
+			read_serie = new File(path);
+			//read_serie = new BufferedReader(new FileReader(path));		
+			series_csv.add(read_serie);
+		}
+		
+		return series_csv;
+	}
+	//Funcao para requisitar a expressão do servidor de expressoes
 	static public LinkedList<String> get_expression(){
 		
 		LinkedList<String> exp_list = new LinkedList<String>();
@@ -38,19 +47,8 @@ public class Cliente {
 	
 	
 	public static void main(String args[]) throws UnknownHostException, IOException{
-		control_client c_control = new control_client("c:\\bolsa\\serie");
-		IPServer ip_controler = new IPServer();
 		
-		List<InetAddress> server_ips = ip_controler.get_server_ips();
-		
-		
-		int i = 0;
-		
-		while(!server_ips.isEmpty()){
-			c_control.connect(server_ips.remove(i).toString(), 10000); //connect with the available servers
-			i++;
-		}			
-		
+		List<File> series_csv = get_series();
 		LinkedList<String> exp_list = get_expression();
 		
 		/* EFETUAR O BROADCAST PARA OBTER O IP DAS MÁQUINAS LIVRES E ENVIAR AS REQUISIÇÕES PARA
@@ -65,6 +63,7 @@ public class Cliente {
 		while(!exp_list.isEmpty()){
 			expression = exp_list.pollFirst();
 			System.out.println(expression);
+			out_object.writeObject(series_csv); out_object.flush();
 			out_object.writeObject(expression); out_object.flush();
 		}
 		
@@ -81,5 +80,7 @@ public class Cliente {
 		
 		
 		socket.close();
+		
+		
 	}
 }

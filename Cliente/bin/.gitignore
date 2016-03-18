@@ -1,7 +1,4 @@
-/control_client.class
-/control_server.class
-/record.class
-/senac/
-/IPControler.class
-/ExpressionServer.class
-/IPServer.class
+/Discover.class
+/br/
+/DiscoverListener.class
+/ServerInstance.class
