@@ -11,10 +11,12 @@ import java.net.UnknownHostException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.lang.*;
 import java.io.File;
 import java.util.LinkedList;
-
+import java.time.*;
+import java.util.*;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -37,49 +39,50 @@ public class Cliente {
 	}
 	
 	
-	public static void main(String args[]) throws UnknownHostException, IOException{
-		control_client c_control = new control_client("c:\\bolsa\\serie");
-		IPServer ip_controler = new IPServer();
-		
-		List<InetAddress> server_ips = ip_controler.get_server_ips();
+	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException{
 		
 		
-		int i = 0;
+		LinkedList<ServerInstance> servers_available = new LinkedList<ServerInstance>(); 
+		LinkedList<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
+		LinkedList<Expression> exp_list = new LinkedList<Expression>();//get list from server
+		List<control_client> c_control = new LinkedList<control_client>();		
 		
-		while(!server_ips.isEmpty()){
-			c_control.connect(server_ips.remove(i).toString(), 10000); //connect with the available servers
-			i++;
-		}			
+		//Initiate the broadcast system. The sender system as well as IP receiver
+		Discover server_discover = new Discover();
+		server_discover.start();
 		
-		LinkedList<String> exp_list = get_expression();
-		
-		/* EFETUAR O BROADCAST PARA OBTER O IP DAS MÁQUINAS LIVRES E ENVIAR AS REQUISIÇÕES PARA
-		 * AS REFERENTES MÁQUINAS*/
-		
-		Socket socket = new Socket("localhost", 10000);
-		String expression;
-		OutputStream out = socket.getOutputStream();
-		ObjectOutputStream out_object = new ObjectOutputStream(out);
-		System.out.println(exp_list.isEmpty());
-		
-		while(!exp_list.isEmpty()){
-			expression = exp_list.pollFirst();
-			System.out.println(expression);
-			out_object.writeObject(expression); out_object.flush();
+		//Get the available servers to connect		
+		while(servers_available.isEmpty()){
+			servers_available = server_discover.get_available_servers();
+//			try{
+//				System.out.println(servers_available.size());
+//			}catch(Exception e){
+//				System.out.println("0");
+//			}
 		}
 		
-		try{
-			InputStream is = socket.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-			String str = reader.readLine();
+		//Create an iterator for the available servers list
+		Iterator<ServerInstance> i = servers_available.iterator();
+		ServerInstance tmp;
+		
+		//Initiate connection with all available servers
+		while(i.hasNext()){
+			tmp = i.next();
+			//Send the parameters: CSV path, Host IP, Port, List of result expressions
+			control_client client = new control_client("c:\\bolsa\\serie",tmp.toString(),10000,r_exp);
+			client.start();
+		}
+		
+		Iterator<control_client> i_control = c_control.iterator();
+		while(true){
+			while(!exp_list.isEmpty()){
+				if(!i_control.hasNext())
+					i_control = c_control.iterator();
+				i_control.next().send_expressions(exp_list.removeFirst());
+			}
+			// SEND RESULT EXPRESSIONS TO EXPRESSION CLIENT
+			// UPDATE EXPRESSIONS FROM EXPRESSION CLIENT
 			
-			System.out.println(str);
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		
-		
-		socket.close();
+		}
 	}
 }

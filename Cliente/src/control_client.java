@@ -1,5 +1,8 @@
 import java.io.*;
 import java.util.*;
+
+import javax.naming.spi.ObjectFactoryBuilder;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.lang.*;
@@ -8,32 +11,63 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class control_client {
+public class control_client extends Thread{
 
+	LinkedList<ExpressionResult> expression_results;
 	List<record> records;
-	List<Socket> connection; //implementar com lista circular
+	Socket connection;; //implementar com lista circular
 
 	//Constructor
-	public control_client(String root_path){
+	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp){
 		String path;
+		expression_results = r_exp;
 		for(int i=0;i<3;i++){
 			path = root_path + Integer.toString(i) + ".txt";
 			record record_table = new record(0,path);
 			records.add(record_table);
-		}	
+		}
+		this.connect(IP, port);
 	}
 	
-	public void connect(String IP,int port){
-		Socket c;
+	public LinkedList<ExpressionResult> get_expression_result(){
+		return this.expression_results;
+	}
+	
+	public void send_expressions(Expression exp) throws IOException{
+		this.send(exp,this.connection);
+	}
+	
+	public void run(){
+		while(!this.connection.isClosed()){
+			try{
+				InputStream input_stream = this.connection.getInputStream();
+				ObjectInputStream input_data = new ObjectInputStream(input_stream);
+				ExpressionResult exp_r = (ExpressionResult)input_data.readObject();
+				expression_results.add(exp_r);
+				
+				System.out.println(exp_r.result);
+				
+			}catch (IOException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+	}
+	
+	public void connect(String IP,int port){	
 		try{
-			c = new Socket(IP,port);
-			this.send_series(c);
-			connection.add(c);
+			this.connection = new Socket(IP,port);
+			this.send_series(this.connection);
 			
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-		
+	}
+	
+	private void send(Expression exp,Socket con) throws IOException{
+		OutputStream out = con.getOutputStream();
+		ObjectOutputStream out_object = new ObjectOutputStream(out);
+		out_object.writeObject(exp); out_object.flush();
 	}
 	
 	private void send_series(Socket con){

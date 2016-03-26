@@ -7,15 +7,14 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Enumeration;
 import java.util.*;
-
 // see https://github.com/brunoapimentel/chat.git
 
 public class Discover extends Thread{
 
-	List<InetAddress> ips;
+	LinkedList<ServerInstance> servers_available = new LinkedList<ServerInstance>();
 	
+	//Initiate the broadcast address discover
 	private LinkedList<InetAddress> get_broadcast_address(){
 		LinkedList<InetAddress> broadcast_addresses = new LinkedList<InetAddress>();
 		
@@ -32,6 +31,7 @@ public class Discover extends Thread{
 						continue;
 					else{
 						broadcast_addresses.add(broadcastTmp);
+						System.out.println(broadcastTmp.getHostAddress().toString());
 					}
 				}		
 			}
@@ -42,41 +42,59 @@ public class Discover extends Thread{
 		return broadcast_addresses;
 	}
 	
-	public void start_broadcast(){
+	//Initiate the broadcast message sender
+	public void start_broadcast() throws InterruptedException{
 		//Get the list of broadcast addresses
 		LinkedList<InetAddress> broadcast = get_broadcast_address();
 			
 		//Start looping the broadcast addresses
-		while(!broadcast.isEmpty()){
-				
-			InetAddress broadcast_ip = broadcast.iterator().next();
-			try{
-				//Alocate a new datagram comunication
-				DatagramSocket socket = new DatagramSocket();
-				socket.setBroadcast(true);
-				// send request with a message
-				String message = "IP request";
-				byte[] buf = message.getBytes();
-				DatagramPacket packet = new DatagramPacket(buf, buf.length,broadcast_ip, 4445);
-				socket.send(packet);
-				socket.close();
-				
-			}catch(SocketException e){
-				e.printStackTrace();
-			} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Iterator<InetAddress> i = broadcast.iterator();
+		InetAddress tmp;
+		while(true){
+			i = broadcast.iterator();
+		
+			while(i.hasNext()){
+				try{
+					tmp = i.next();
+					//Alocate a new datagram comunication
+					DatagramSocket socket = new DatagramSocket();
+					socket.setBroadcast(true);
+					// send request with a message
+					String message = "IP request\0";
+					byte[] buf = message.getBytes();
+					DatagramPacket packet = new DatagramPacket(buf, buf.length,tmp, 4445);
+					socket.send(packet);
+					socket.close();
+					
+				}catch(SocketException e){
+					e.printStackTrace();
+				} catch (IOException e) {
+				// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			sleep(20000);//Wait a minute to star the broadcast send again
 		}
+	}
+	
+	public LinkedList<ServerInstance> get_available_servers(){
+		return this.servers_available;
 	}
 	
 	public void run(){
 		
-		DiscoverListener listener = new DiscoverListener();
+		// Inicializa o sistema de listener para que o servidor possa receber as respostas dos outros IPs
+		DiscoverListener listener = new DiscoverListener(this.servers_available); 
 		listener.start();
 		
-		this.start_broadcast();
-		
-		
+		// Inicia o broadcast para todos os IPs de broadcast encontrados
+		try {
+			
+			this.start_broadcast();
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 }
