@@ -26,14 +26,18 @@ import java.net.*;
 public class Cliente {
 	
 	//Funcao para simular a expressão do servidor de expressoes
-	static public LinkedList<String> get_expression(){
+	static public LinkedList<Expression> get_expression(){
 		
-		LinkedList<String> exp_list = new LinkedList<String>();
+		LinkedList<Expression> exp_list = new LinkedList<Expression>();
 		
-		exp_list.add("Exp 1");
-		exp_list.add("Exp 2");
-		exp_list.add("Exp 3");
-		exp_list.add("Exp 4");
+		Expression a = new Expression("Exp 1",1);
+		Expression b = new Expression("Exp 2",2);
+		Expression c = new Expression("Exp 3",3);
+		Expression d = new Expression("Exp 4",4);
+		exp_list.add(a);
+		exp_list.add(b);
+		exp_list.add(c);
+		exp_list.add(d);
 		
 		return exp_list; 
 	}
@@ -44,7 +48,7 @@ public class Cliente {
 		
 		LinkedList<ServerInstance> servers_available = new LinkedList<ServerInstance>(); 
 		LinkedList<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
-		LinkedList<Expression> exp_list = new LinkedList<Expression>();//get list from server
+		LinkedList<Expression> exp_list;// = new LinkedList<Expression>();//get list from server
 		List<control_client> c_control = new LinkedList<control_client>();		
 		
 		//Initiate the broadcast system. The sender system as well as IP receiver
@@ -54,11 +58,6 @@ public class Cliente {
 		//Get the available servers to connect		
 		while(servers_available.isEmpty()){
 			servers_available = server_discover.get_available_servers();
-//			try{
-//				System.out.println(servers_available.size());
-//			}catch(Exception e){
-//				System.out.println("0");
-//			}
 		}
 		
 		//Create an iterator for the available servers list
@@ -69,16 +68,21 @@ public class Cliente {
 		while(i.hasNext()){
 			tmp = i.next();
 			//Send the parameters: CSV path, Host IP, Port, List of result expressions
-			control_client client = new control_client("c:\\bolsa\\serie",tmp.toString(),10000,r_exp);
+			control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
+			c_control.add(client);
 			client.start();
 		}
+		exp_list = get_expression();
 		
 		Iterator<control_client> i_control = c_control.iterator();
 		while(true){
+			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
-				if(!i_control.hasNext())
+				if(i_control.hasNext())
+					i_control.next().send_expressions(exp_list.removeFirst());
+				else
 					i_control = c_control.iterator();
-				i_control.next().send_expressions(exp_list.removeFirst());
+				
 			}
 			// SEND RESULT EXPRESSIONS TO EXPRESSION CLIENT
 			// UPDATE EXPRESSIONS FROM EXPRESSION CLIENT

@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 
 public class BroadcastReceiver {
 	
-	public static void main(String[] args) throws IOException {
+	public void bonjuor() throws IOException {
 		// TODO Auto-generated method stub
 		int port = 4445;
 		
@@ -32,6 +32,7 @@ public class BroadcastReceiver {
     	  if(in_data.equals("IP request")){
     	      DatagramPacket send_packet = new DatagramPacket(out_buffer,out_buffer.length,connected_ip,4446);
     		  socket.send(send_packet);
+    		  break;
     	  }  	  
       }
 	}

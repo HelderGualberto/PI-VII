@@ -15,17 +15,17 @@ public class control_client extends Thread{
 
 	LinkedList<ExpressionResult> expression_results;
 	List<record> records;
-	Socket connection;; //implementar com lista circular
+	Socket connection; //implementar com lista circular
 
 	//Constructor
 	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp){
 		String path;
 		expression_results = r_exp;
-		for(int i=0;i<3;i++){
-			path = root_path + Integer.toString(i) + ".txt";
-			record record_table = new record(0,path);
-			records.add(record_table);
-		}
+//		for(int i=1;i<4;i++){
+//			path = root_path + Integer.toString(i) + ".csv";
+//			record record_table = new record(i,path);
+//			records.add(record_table);
+//		}
 		this.connect(IP, port);
 	}
 	
@@ -57,7 +57,8 @@ public class control_client extends Thread{
 	public void connect(String IP,int port){	
 		try{
 			this.connection = new Socket(IP,port);
-			this.send_series(this.connection);
+			System.out.println(IP);
+			//this.send_series(this.connection);
 			
 		}catch (IOException e){
 			e.printStackTrace();
@@ -74,10 +75,14 @@ public class control_client extends Thread{
 		try{
 			OutputStream out = con.getOutputStream();
 			ObjectOutputStream out_object = new ObjectOutputStream(out);
-			while(records.iterator().hasNext()){
-				record csv_serie = records.iterator().next();
-				out_object.writeObject(csv_serie); out_object.flush();
-			}
+			//Send all the series to the server
+			out_object.writeObject(records); out_object.flush();
+			
+//			while(records.iterator().hasNext()){
+//				record csv_serie = records.iterator().next();
+//				out_object.writeObject(csv_serie); out_object.flush();
+//			}
+			
 		}catch (Exception e){
 			e.printStackTrace();
 		}
