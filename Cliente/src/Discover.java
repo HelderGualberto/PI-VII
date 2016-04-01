@@ -35,7 +35,6 @@ public class Discover extends Thread{
 						continue;
 					else{
 						broadcast_addresses.add(broadcastTmp);
-						System.out.println(broadcastTmp.getHostAddress().toString());
 					}
 				}		
 			}

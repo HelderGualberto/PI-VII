@@ -4,7 +4,11 @@ import java.util.*;
 import javax.naming.spi.ObjectFactoryBuilder;
 
 import java.net.Socket;
+import java.net.StandardSocketOptions;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.lang.*;
 
 import org.apache.commons.csv.CSVFormat;
@@ -14,29 +18,15 @@ import org.apache.commons.csv.CSVRecord;
 public class control_client extends Thread{
 
 	LinkedList<ExpressionResult> expression_results;
-	List<record> records;
-	Socket connection; //implementar com lista circular
+	List<String> records = new ArrayList<String>();
+	Socket connection;
 
 	//Constructor
-	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException{
-		String path;
+	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException, IOException{
 		expression_results = r_exp;
-//		for(int i=1;i<4;i++){
-//			path = root_path + Integer.toString(i) + ".csv";
-//			record record_table = new record(i,path);
-//			records.add(record_table);
-//		}
 		this.connect(IP, port);
-		this.sleep(500);
-
-	}
-	
-	public LinkedList<ExpressionResult> get_expression_result(){
-		return this.expression_results;
-	}
-	
-	public void send_expressions(Expression exp) throws IOException, InterruptedException{
-		this.send(exp);
+		this.send_series(this.connection);
+		this.sleep(50);
 	}
 	
 	public void run(){
@@ -46,7 +36,6 @@ public class control_client extends Thread{
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);
 				ExpressionResult exp_r = (ExpressionResult)input_data.readObject();
 				expression_results.add(exp_r);
-				
 				System.out.println(exp_r.result);
 				
 			}catch (IOException | ClassNotFoundException e) {
@@ -65,13 +54,19 @@ public class control_client extends Thread{
 	public void connect(String IP,int port){	
 		try{
 			this.connection = new Socket(IP,port);
-			System.out.println("Connected!");
-			System.out.println(IP);
 			//this.send_series(this.connection);
 			
 		}catch (IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	public LinkedList<ExpressionResult> get_expression_result(){
+		return this.expression_results;
+	}
+	
+	public void send_expressions(Expression exp) throws IOException, InterruptedException{
+		this.send(exp);
 	}
 	
 	private void send(Expression exp) throws IOException{
@@ -84,15 +79,17 @@ public class control_client extends Thread{
 	
 	private void send_series(Socket con){
 		try{
+			String path;
+			//for(int i=1;i<4;i++){
+			byte[] b;
+			b = Files.readAllBytes(Paths.get("C:\\Users\\geoinformacao.SENACEDU\\Downloads\\table.csv"));
+			String serie = new String(b,StandardCharsets.UTF_8);
+			records.add(serie);
+			
+			//Send the list of string series to the server
 			OutputStream out = con.getOutputStream();
 			ObjectOutputStream out_object = new ObjectOutputStream(out);
-			//Send all the series to the server
 			out_object.writeObject(records); out_object.flush();
-			
-//			while(records.iterator().hasNext()){
-//				record csv_serie = records.iterator().next();
-//				out_object.writeObject(csv_serie); out_object.flush();
-//			}
 			
 		}catch (Exception e){
 			e.printStackTrace();

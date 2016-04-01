@@ -64,7 +64,7 @@ public class Cliente {
 		while(!servers_available.isEmpty()){
 			tmp = servers_available.remove(0);
 			//Send the parameters: CSV path, Host IP, Port, List of result expressions
-			control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
+			control_client client = new control_client("",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
 			c_control.add(client);
 			client.start();
 		}
@@ -74,19 +74,13 @@ public class Cliente {
 		while(true){
 			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
+
 				if(i_control.hasNext()){
 					i_control.next().send_expressions(exp_list.removeFirst());
 				}
 				else
 					i_control = c_control.iterator();
 				exp_list = get_expression();
-			}
-			if(!servers_available.isEmpty()){
-				tmp = servers_available.remove(0);
-				//Send the parameters: CSV path, Host IP, Port, List of result expressions
-				control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
-				c_control.add(client);
-				client.start();
 			}
 			// SEND RESULT EXPRESSIONS TO EXPRESSION CLIENT
 			// UPDATE EXPRESSIONS FROM EXPRESSION CLIENT

@@ -37,7 +37,6 @@ public class DiscoverListener extends Thread{
 		          
 		          // Add the instance in the ServerInstance list
 		          this.instances.add(instance);
-		          System.out.println("added");
 		          server_id++;
 		          
 		        //dsocket.getLocalAddress();
