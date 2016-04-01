@@ -56,10 +56,12 @@ public class Cliente {
 		server_discover.start();
 		
 		//Get the available servers to connect		
+		servers_available = server_discover.get_available_servers();
 		while(servers_available.isEmpty()){
-			servers_available = server_discover.get_available_servers();
+			System.out.println(servers_available.size());
+			servers_available = server_discover.get_available_servers(); //linha bizarra
 		}
-		
+		System.out.println(servers_available.size());
 		//Create an iterator for the available servers list
 		ServerInstance tmp;
 		
@@ -77,8 +79,10 @@ public class Cliente {
 		while(true){
 			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
-				if(i_control.hasNext())
+				if(i_control.hasNext()){
+					System.out.println("Sending");
 					i_control.next().send_expressions(exp_list.removeFirst());
+				}
 				else
 					i_control = c_control.iterator();
 				
