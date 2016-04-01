@@ -18,7 +18,7 @@ public class control_client extends Thread{
 	Socket connection; //implementar com lista circular
 
 	//Constructor
-	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp){
+	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException{
 		String path;
 		expression_results = r_exp;
 //		for(int i=1;i<4;i++){
@@ -27,14 +27,16 @@ public class control_client extends Thread{
 //			records.add(record_table);
 //		}
 		this.connect(IP, port);
+		this.sleep(500);
+
 	}
 	
 	public LinkedList<ExpressionResult> get_expression_result(){
 		return this.expression_results;
 	}
 	
-	public void send_expressions(Expression exp) throws IOException{
-		this.send(exp,this.connection);
+	public void send_expressions(Expression exp) throws IOException, InterruptedException{
+		this.send(exp);
 	}
 	
 	public void run(){
@@ -57,6 +59,7 @@ public class control_client extends Thread{
 	public void connect(String IP,int port){	
 		try{
 			this.connection = new Socket(IP,port);
+			System.out.println("Connected!");
 			System.out.println(IP);
 			//this.send_series(this.connection);
 			
@@ -65,10 +68,12 @@ public class control_client extends Thread{
 		}
 	}
 	
-	private void send(Expression exp,Socket con) throws IOException{
-		OutputStream out = con.getOutputStream();
+	private void send(Expression exp) throws IOException{
+		System.out.println("Transfering Data");
+		OutputStream out = this.connection.getOutputStream();
 		ObjectOutputStream out_object = new ObjectOutputStream(out);
-		out_object.writeObject(exp); out_object.flush();
+		out_object.writeObject(exp); 
+		out_object.flush();
 	}
 	
 	private void send_series(Socket con){
