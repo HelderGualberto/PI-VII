@@ -13,7 +13,6 @@ public class Servidor {
 	
 	public Servidor() throws IOException{
 		 serverSocket  = new ServerSocket(10000);
-
 	}
 	
 	public void receive_series(Socket socket) throws IOException{
@@ -33,6 +32,8 @@ public class Servidor {
 		
 		
 		while(true){
+			System.out.println("Server UP!");
+			System.out.println("Start broadcasting!");
 			UDP_receiver.bonjuor();
 			Socket socket = servidor.serverSocket.accept();
 			ServerThread connection = new ServerThread(socket,servidor.espressions);

@@ -23,22 +23,23 @@ public class ServerThread extends Thread{
 	}
 	
     public void run(){
-    	
-    	System.out.println("Running");
-    	
+    	    	
     	while(!this.socket.isClosed()){	
     		System.out.println("Running_in");
     		try {
 				InputStream input_stream = this.socket.getInputStream();
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);
-	    		Expression exp = (Expression)input_data.readObject();
+				Expression exp = (Expression)input_data.readObject();
 				expressions.add(exp);
 				System.out.println(exp.expression);
 			} catch (IOException e) {
 				e.printStackTrace();
+				break;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+				break;
 			}
+    		System.out.println("Running_out");
     		
     	}
     	

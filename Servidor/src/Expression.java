@@ -1,5 +1,6 @@
+import java.io.*;
 
-public class Expression {
+public class Expression implements Serializable{
 	
 	String expression;
 	int ID;
