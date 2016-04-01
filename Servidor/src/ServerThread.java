@@ -7,6 +7,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
+
+import javax.print.DocFlavor.INPUT_STREAM;
+
 import java.io.*;
 
 public class ServerThread extends Thread{
@@ -22,8 +25,18 @@ public class ServerThread extends Thread{
 		this.expressions = exps;
 	}
 	
+	private void close_connection(){
+		try {
+			this.socket.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
     public void run(){
-    	    	
+    	  
+		
     	while(!this.socket.isClosed()){	
     		System.out.println("Running_in");
     		try {
@@ -32,16 +45,20 @@ public class ServerThread extends Thread{
 				Expression exp = (Expression)input_data.readObject();
 				expressions.add(exp);
 				System.out.println(exp.expression);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
-				break;
+				this.close_connection();
+				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-				break;
+				this.close_connection();
 			}
     		System.out.println("Running_out");
     		
     	}
+
+		
     	
 //    	InputStream is;
 //		try {

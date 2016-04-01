@@ -35,5 +35,6 @@ public class BroadcastReceiver {
     		  break;
     	  }  	  
       }
+      socket.close();
 	}
 }
