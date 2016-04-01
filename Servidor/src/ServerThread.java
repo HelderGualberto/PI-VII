@@ -24,7 +24,10 @@ public class ServerThread extends Thread{
 	
     public void run(){
     	
+    	System.out.println("Running");
+    	
     	while(!this.socket.isClosed()){	
+    		System.out.println("Running_in");
     		try {
 				InputStream input_stream = this.socket.getInputStream();
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);

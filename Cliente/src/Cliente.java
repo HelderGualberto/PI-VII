@@ -61,12 +61,11 @@ public class Cliente {
 		}
 		
 		//Create an iterator for the available servers list
-		Iterator<ServerInstance> i = servers_available.iterator();
 		ServerInstance tmp;
 		
 		//Initiate connection with all available servers
-		while(i.hasNext()){
-			tmp = i.next();
+		while(!servers_available.isEmpty()){
+			tmp = servers_available.removeFirst();
 			//Send the parameters: CSV path, Host IP, Port, List of result expressions
 			control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
 			c_control.add(client);
@@ -83,6 +82,13 @@ public class Cliente {
 				else
 					i_control = c_control.iterator();
 				
+			}
+			if(!servers_available.isEmpty()){
+				tmp = servers_available.removeFirst();
+				//Send the parameters: CSV path, Host IP, Port, List of result expressions
+				control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
+				c_control.add(client);
+				client.start();
 			}
 			// SEND RESULT EXPRESSIONS TO EXPRESSION CLIENT
 			// UPDATE EXPRESSIONS FROM EXPRESSION CLIENT
