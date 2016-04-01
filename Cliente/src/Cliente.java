@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +27,23 @@ import java.net.*;
 public class Cliente {
 	
 	//Funcao para simular a expressão do servidor de expressoes
-	static public LinkedList<Expression> get_expression(){
+	static public LinkedList<Expression> get_expression() throws IOException{
 		
 		LinkedList<Expression> exp_list = new LinkedList<Expression>();
+		byte[] buffer = new byte[500];
 		
-		Expression a = new Expression("Exp 1",1);
-		Expression b = new Expression("Exp 2",2);
-		Expression c = new Expression("Exp 3",3);
-		Expression d = new Expression("Exp 4",4);
-		exp_list.add(a);
-		exp_list.add(b);
-		exp_list.add(c);
-		exp_list.add(d);
-		
-		return exp_list; 
+		System.in.read(buffer, 0, 499);
+		String a = new String(buffer,StandardCharsets.UTF_8);
+		Expression exp = new Expression(a,1);
+		exp_list.add(exp);
+		return exp_list;
 	}
 	
 	
 	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException{
 		
 		
-		LinkedList<ServerInstance> servers_available = new LinkedList<ServerInstance>(); 
+		List<ServerInstance> servers_available; 
 		LinkedList<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
 		LinkedList<Expression> exp_list;// = new LinkedList<Expression>();//get list from server
 		List<control_client> c_control = new LinkedList<control_client>();		
@@ -56,18 +53,16 @@ public class Cliente {
 		server_discover.start();
 		
 		//Get the available servers to connect		
+		
 		servers_available = server_discover.get_available_servers();
 		while(servers_available.isEmpty()){
-			System.out.println(servers_available.size());
-			servers_available = server_discover.get_available_servers(); //linha bizarra
+			servers_available = server_discover.get_available_servers(); //linha bizarra			
 		}
-		System.out.println(servers_available.size());
-		//Create an iterator for the available servers list
+
 		ServerInstance tmp;
-		
 		//Initiate connection with all available servers
 		while(!servers_available.isEmpty()){
-			tmp = servers_available.removeFirst();
+			tmp = servers_available.remove(0);
 			//Send the parameters: CSV path, Host IP, Port, List of result expressions
 			control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
 			c_control.add(client);
@@ -80,15 +75,14 @@ public class Cliente {
 			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
 				if(i_control.hasNext()){
-					System.out.println("Sending");
 					i_control.next().send_expressions(exp_list.removeFirst());
 				}
 				else
 					i_control = c_control.iterator();
-				
+				exp_list = get_expression();
 			}
 			if(!servers_available.isEmpty()){
-				tmp = servers_available.removeFirst();
+				tmp = servers_available.remove(0);
 				//Send the parameters: CSV path, Host IP, Port, List of result expressions
 				control_client client = new control_client("d:\\bolsa\\Serie",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
 				c_control.add(client);

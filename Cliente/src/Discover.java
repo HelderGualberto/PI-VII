@@ -12,7 +12,11 @@ import java.util.*;
 
 public class Discover extends Thread{
 
-	LinkedList<ServerInstance> servers_available = new LinkedList<ServerInstance>();
+	List<ServerInstance> servers_available = new LinkedList<ServerInstance>();
+	
+	public Discover(){
+		servers_available =  Collections.synchronizedList(servers_available);
+	}
 	
 	//Initiate the broadcast address discover
 	private LinkedList<InetAddress> get_broadcast_address(){
@@ -77,7 +81,7 @@ public class Discover extends Thread{
 		}
 	}
 	
-	public LinkedList<ServerInstance> get_available_servers(){
+	public List<ServerInstance> get_available_servers(){
 		return this.servers_available;
 	}
 	

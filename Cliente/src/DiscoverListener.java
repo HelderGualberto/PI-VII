@@ -5,9 +5,9 @@ import java.util.*;
 
 public class DiscoverListener extends Thread{
 
-	LinkedList<ServerInstance> instances;
+	List<ServerInstance> instances;
 	
-	public DiscoverListener(LinkedList<ServerInstance> instances){
+	public DiscoverListener(List<ServerInstance> instances){
 		this.instances = instances;
 	}
 	
@@ -39,6 +39,7 @@ public class DiscoverListener extends Thread{
 		          this.instances.add(instance);
 		          System.out.println("added");
 		          server_id++;
+		          
 		        //dsocket.getLocalAddress();
 		        // Convert the contents to a string, and display them
 		        //String msg = new String(buffer, 0, packet.getLength());

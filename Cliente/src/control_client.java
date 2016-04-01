@@ -50,6 +50,12 @@ public class control_client extends Thread{
 				System.out.println(exp_r.result);
 				
 			}catch (IOException | ClassNotFoundException e) {
+				try {
+					this.connection.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	

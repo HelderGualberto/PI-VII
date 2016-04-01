@@ -3,10 +3,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import java.io.*;
 import java.util.*;
+import java.io.*;
 
 
-
-public class record {
+public class record implements Serializable{
 
 	public int id;
 	public List<CSVRecord> serie;
