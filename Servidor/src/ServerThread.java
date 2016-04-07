@@ -18,8 +18,6 @@ public class ServerThread extends Thread{
 //	MathResponse calculadora = new MathResponse();
 	LinkedList<Expression> expressions;
 	
-	
-	
 	public ServerThread(Socket socket,LinkedList<Expression> exps) {
 		this.socket = socket;
 		this.expressions = exps;

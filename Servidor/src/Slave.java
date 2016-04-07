@@ -5,29 +5,48 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 public class Slave {
+	//------------------------------------------------GLOBAL VARIABLES-----------------------------------------------
 	ServerSocket serverSocket;
-	List<record> series;
-	
+	List<Record> series;
 	LinkedList<Expression> espressions = new LinkedList<Expression>();
 	
+	//------------------------------------------------CONSTRUCTOR-----------------------------------------------
 	public Slave() throws IOException{
-		 serverSocket  = new ServerSocket(10000);
+		this.series = new ArrayList<Record>();
+		serverSocket  = new ServerSocket(10000);
 	}
 	
+	private Record get_csv_from_string(int id, String serie){
+		Record r = new Record(id,serie);
+		return r;
+	}
+	
+	//------------------------------------------------RECEIVE SERIES-----------------------------------------------
 	public void receive_series(Socket socket) throws IOException{
 		System.out.println("Waiting series");
 		InputStream input_stream = socket.getInputStream();
 		ObjectInputStream input_data = new ObjectInputStream(input_stream);
+		Record r;
 		try{
 			List<String> s_series = (List<String>)input_data.readObject();
-			System.out.println(s_series.remove(0));
+			int id = 0;
+			for(String s: s_series){
+				r = get_csv_from_string(id, s);
+				this.series.add(r);
+				id++;
+			}
+		
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}
-		
 	}
 	
+	//------------------------------------------------MAIN FUNCTION-----------------------------------------------
 	public static void main(String arg[]) throws IOException {
 		Slave servidor = new Slave();
 		BroadcastReceiver UDP_receiver = new BroadcastReceiver();
@@ -41,7 +60,18 @@ public class Slave {
 			servidor.receive_series(socket);
 			
 			connection.start();
+			
+			System.out.println("Number of series:" + servidor.series.size());
+			/*
+			int open = 1;
+			for(Record r: servidor.series){
+				for(int i=0;i<r.serie.size();i++){
+					String s = r.serie.get(i).get(open).toString();
+				}
+			}
+			*/
 			while(connection.isAlive()){
+				
 				//Pop from expression list
 				//Use the math calculator to get the result
 				//Send the result to client

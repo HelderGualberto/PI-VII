@@ -19,20 +19,13 @@ public class MathResponse {
 	private ScriptEngineManager factory = new ScriptEngineManager();
     private ScriptEngine engine = factory.getEngineByName("JavaScript");
 	
-    public void setup(){
+    public MathResponse(Record r){
     	try {
-    		String fileName = "C:\\Users\\geoinformacao\\Downloads\\table.csv";
-    		FileReader reader = new FileReader(fileName);
-			CSVParser fileParser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
-			records = fileParser.getRecords();
-			fileParser.close();
+    		this.records = r.serie;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RuntimeException("erro carga dados");
 		}
-		
-		
     }
     
     private boolean isToBuy(List<CSVRecord> records2, int i, String formula) {
