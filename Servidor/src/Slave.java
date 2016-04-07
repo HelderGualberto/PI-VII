@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Slave {
 	ServerSocket serverSocket;
-	
 	List<record> series;
+	
 	LinkedList<Expression> espressions = new LinkedList<Expression>();
 	
 	public Slave() throws IOException{
@@ -16,13 +16,16 @@ public class Slave {
 	}
 	
 	public void receive_series(Socket socket) throws IOException{
+		System.out.println("Waiting series");
 		InputStream input_stream = socket.getInputStream();
 		ObjectInputStream input_data = new ObjectInputStream(input_stream);
 		try{
-			this.series = (List<record>)input_data.readObject();
+			List<String> s_series = (List<String>)input_data.readObject();
+			System.out.println(s_series.remove(0));
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public static void main(String arg[]) throws IOException {
@@ -35,9 +38,9 @@ public class Slave {
 			UDP_receiver.bonjuor();
 			Socket socket = servidor.serverSocket.accept();
 			ServerThread connection = new ServerThread(socket,servidor.espressions);
-			connection.start();
-			//servidor.receive_series(socket);
+			servidor.receive_series(socket);
 			
+			connection.start();
 			while(connection.isAlive()){
 				//Pop from expression list
 				//Use the math calculator to get the result

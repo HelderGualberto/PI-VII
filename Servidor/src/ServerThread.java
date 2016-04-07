@@ -38,13 +38,12 @@ public class ServerThread extends Thread{
     	  
 		
     	while(!this.socket.isClosed()){	
-    		System.out.println("Running_in");
     		try {
 				InputStream input_stream = this.socket.getInputStream();
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);
 				Expression exp = (Expression)input_data.readObject();
 				expressions.add(exp);
-				System.out.println(exp.expression);
+				System.out.println("Input Data: " + exp.expression);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -54,7 +53,6 @@ public class ServerThread extends Thread{
 				e.printStackTrace();
 				this.close_connection();
 			}
-    		System.out.println("Running_out");
     		
     	}
 

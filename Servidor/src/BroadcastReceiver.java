@@ -15,7 +15,8 @@ public class BroadcastReceiver {
       // packe is larger than this buffer, the
       // excess will simply be discarded!
       byte[] buffer = new byte[10];
-      byte[] out_buffer = "PC1 - Connected!".getBytes();
+      String address = InetAddress.getLocalHost().getHostName();
+      byte[] out_buffer = address.getBytes();
       
       
       // Create a packet to receive data into the buffer
