@@ -38,7 +38,7 @@ public class Client extends Thread{
 				ExpressionResult er= (ExpressionResult)in_data.readObject();
 				this.expression_results.add(er);
 				System.out.println("Exp ID: " + er.id);
-				System.out.println("ID ativo: " + er.id_ativo);
+				System.out.println("ID ativo: " + er.active);
 				System.out.println("Result: " + er.result);
 				
 			} catch (IOException e) {
@@ -83,18 +83,17 @@ public class Client extends Thread{
 			
 			for(File f:files){
 				String path = root_path+f.getName();
+				path = path.trim();
+				System.out.println(path);
 				byte[] b;
 				b = Files.readAllBytes(Paths.get(path));
 				String serie = new String(b,StandardCharsets.UTF_8);
 				records.add(serie);
-				
 				//Send the list of string series to the server
-				OutputStream out = con.getOutputStream();
-				ObjectOutputStream out_object = new ObjectOutputStream(out);
-				out_object.writeObject(records); out_object.flush();
-				
 			}
-			
+			OutputStream out = con.getOutputStream();
+			ObjectOutputStream out_object = new ObjectOutputStream(out);
+			out_object.writeObject(records); out_object.flush();
 			
 			
 		}catch (Exception e){

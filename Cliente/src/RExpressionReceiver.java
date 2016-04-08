@@ -23,7 +23,7 @@ public class RExpressionReceiver extends Thread{
 				ExpressionResult er= (ExpressionResult)in_data.readObject();
 				this.results.add(er);
 				System.out.println("Exp ID: " + er.id);
-				System.out.println("ID ativo: " + er.id_ativo);
+				System.out.println("ID ativo: " + er.active);
 				System.out.println("Result: " + er.result);
 				
 			} catch (IOException e) {

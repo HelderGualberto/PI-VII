@@ -25,8 +25,8 @@ public class Slave {
 		serverSocket  = new ServerSocket(10000);
 	}
 	
-	private Record get_csv_from_string(int id, String serie){
-		Record r = new Record(id,serie);
+	private Record get_csv_from_string(String serie){
+		Record r = new Record(serie);
 		return r;
 	}
 	
@@ -40,7 +40,7 @@ public class Slave {
 			List<String> s_series = (List<String>)input_data.readObject();
 			int id = 0;
 			for(String s: s_series){
-				r = get_csv_from_string(id, s);
+				r = get_csv_from_string(s);
 				this.series.add(r);
 				id++;
 			}
@@ -77,7 +77,7 @@ public class Slave {
 						calculator.setup(r);
 						try{
 							result = calculator.testFormula(exp.expression);
-							exp_r = new ExpressionResult(result,exp.ID,r.id);
+							exp_r = new ExpressionResult(result,r.active_name,exp.ID);
 							servidor.results.add(exp_r);
 							System.out.println("Resultado: " + result);
 						}catch(Exception e){

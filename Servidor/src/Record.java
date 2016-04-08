@@ -1,8 +1,3 @@
-
-import java.io.*;
-import java.util.*;
-
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -13,14 +8,14 @@ import java.io.*;
 
 public class Record implements Serializable{
 
-	public int id;
+	public String active_name;
 	public List<CSVRecord> serie;
 	
-	public Record(int id, String record){
-		this.id = id;
+	public Record(String record){
 		try {
-			CSVParser fileParser = CSVParser.parse(record,CSVFormat.EXCEL.withHeader("Date","Open","High","Low","Close"));
+			CSVParser fileParser = CSVParser.parse(record,CSVFormat.EXCEL.withHeader());
 			this.serie = fileParser.getRecords();
+			this.active_name = this.serie.get(0).get(0);
 			fileParser.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

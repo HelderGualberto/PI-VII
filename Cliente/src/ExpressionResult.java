@@ -3,12 +3,12 @@ import java.io.Serializable;
 public class ExpressionResult implements Serializable{
 
 	double result;
-	int id_ativo;
+	String active;
 	int id;
 	
-	public ExpressionResult(double result,int id_ativo,int id) {
+	public ExpressionResult(double result,String active,int id) {
 		this.result = result;
-		this.id_ativo = id_ativo;
+		this.active = active;
 		this.id = id;
 		// TODO Auto-generated constructor stub
 	}
