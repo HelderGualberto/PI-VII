@@ -16,10 +16,11 @@ public class Slave {
 	ServerSocket serverSocket;
 	List<Record> series;
 	LinkedList<Expression> expressions = new LinkedList<Expression>();
-	LinkedList<ExpressionResult> results = new LinkedList<ExpressionResult>();
+	List<ExpressionResult> results = new LinkedList<ExpressionResult>();
 	
 	//------------------------------------------------CONSTRUCTOR-----------------------------------------------
 	public Slave() throws IOException{
+		this.results = Collections.synchronizedList(results);
 		this.series = new ArrayList<Record>();
 		serverSocket  = new ServerSocket(10000);
 	}
@@ -66,14 +67,7 @@ public class Slave {
 			connection.start();
 			
 			System.out.println("Number of series:" + servidor.series.size());
-			/*
-			int open = 1;
-			for(Record r: servidor.series){
-				for(int i=0;i<r.serie.size();i++){
-					String s = r.serie.get(i).get(open).toString();
-				}
-			}
-			*/
+		
 			while(connection.isAlive()){
 				ExpressionResult exp_r;
 				if(!servidor.expressions.isEmpty()){
@@ -95,7 +89,7 @@ public class Slave {
 				}
 				//Condition to send the result array back
 				if(!servidor.results.isEmpty()){
-					ExpressionResult r = servidor.results.removeFirst();
+					ExpressionResult r = servidor.results.remove(0);
 					OutputStream out_stream = socket.getOutputStream();
 					ObjectOutputStream out_data = new ObjectOutputStream(out_stream);
 					out_data.writeObject(r);

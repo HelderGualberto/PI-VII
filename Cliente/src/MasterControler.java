@@ -10,12 +10,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.lang.*;
 import java.io.File;
-import java.util.LinkedList;
 import java.time.*;
 import java.util.*;
 
@@ -45,7 +42,9 @@ public class MasterControler {
 		
 		
 		List<ServerInstance> servers_available; 
-		LinkedList<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
+		List<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
+		r_exp = Collections.synchronizedList(r_exp);//Syncronize the list with other threads
+		
 		LinkedList<Expression> exp_list;// = new LinkedList<Expression>();//get list from server
 		List<Client> c_control = new LinkedList<Client>();		
 		
