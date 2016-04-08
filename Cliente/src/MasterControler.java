@@ -45,7 +45,7 @@ public class MasterControler {
 		
 		
 		List<ServerInstance> servers_available; 
-		LinkedList<GENode> r_exp = new LinkedList<GENode>();
+		LinkedList<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
 		LinkedList<Expression> exp_list;// = new LinkedList<Expression>();//get list from server
 		List<Client> c_control = new LinkedList<Client>();		
 		

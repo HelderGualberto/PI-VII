@@ -17,12 +17,12 @@ import org.apache.commons.csv.CSVRecord;
 
 public class Client extends Thread{
 
-	LinkedList<GENode> expression_results;
+	LinkedList<ExpressionResult> expression_results;
 	List<String> records = new ArrayList<String>();
 	Socket connection;
 
 	//Constructor
-	public Client(String IP,int port,LinkedList<GENode> r_exp) throws InterruptedException, IOException{
+	public Client(String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException, IOException{
 		expression_results = r_exp;
 		this.connect(IP, port);
 		this.send_series(this.connection);
@@ -33,7 +33,7 @@ public class Client extends Thread{
 			try{
 				InputStream input_stream = this.connection.getInputStream();
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);
-				GENode exp_r = (GENode)input_data.readObject();
+				ExpressionResult exp_r = (ExpressionResult)input_data.readObject();
 				expression_results.add(exp_r);
 				System.out.println(exp_r.result);
 				
@@ -60,7 +60,7 @@ public class Client extends Thread{
 		}
 	}
 	
-	public LinkedList<GENode> get_expression_result(){
+	public LinkedList<ExpressionResult> get_expression_result(){
 		return this.expression_results;
 	}
 	

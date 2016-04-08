@@ -16,7 +16,7 @@ public class Slave {
 	ServerSocket serverSocket;
 	List<Record> series;
 	LinkedList<Expression> expressions = new LinkedList<Expression>();
-	ArrayList<ExpressionResult> results = new ArrayList<ExpressionResult>();
+	LinkedList<ExpressionResult> results = new LinkedList<ExpressionResult>();
 	
 	//------------------------------------------------CONSTRUCTOR-----------------------------------------------
 	public Slave() throws IOException{
@@ -94,10 +94,11 @@ public class Slave {
 					}
 				}
 				//Condition to send the result array back
-				if(servidor.expressions.size()<servidor.results.size() || servidor.results.size() > 50){
+				if(!servidor.results.isEmpty()){
+					ExpressionResult r = servidor.results.removeFirst();
 					OutputStream out_stream = socket.getOutputStream();
 					ObjectOutputStream out_data = new ObjectOutputStream(out_stream);
-					out_data.writeObject(servidor.results);
+					out_data.writeObject(r);
 					out_data.flush();
 					
 				}
