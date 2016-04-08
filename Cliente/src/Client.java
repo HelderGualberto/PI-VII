@@ -17,12 +17,12 @@ import org.apache.commons.csv.CSVRecord;
 
 public class Client extends Thread{
 
-	LinkedList<ExpressionResult> expression_results;
+	LinkedList<GENode> expression_results;
 	List<String> records = new ArrayList<String>();
 	Socket connection;
 
 	//Constructor
-	public Client(String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException, IOException{
+	public Client(String IP,int port,LinkedList<GENode> r_exp) throws InterruptedException, IOException{
 		expression_results = r_exp;
 		this.connect(IP, port);
 		this.send_series(this.connection);
@@ -33,7 +33,7 @@ public class Client extends Thread{
 			try{
 				InputStream input_stream = this.connection.getInputStream();
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);
-				ExpressionResult exp_r = (ExpressionResult)input_data.readObject();
+				GENode exp_r = (GENode)input_data.readObject();
 				expression_results.add(exp_r);
 				System.out.println(exp_r.result);
 				
@@ -60,7 +60,7 @@ public class Client extends Thread{
 		}
 	}
 	
-	public LinkedList<ExpressionResult> get_expression_result(){
+	public LinkedList<GENode> get_expression_result(){
 		return this.expression_results;
 	}
 	
@@ -81,7 +81,7 @@ public class Client extends Thread{
 			String path;
 			//for(int i=1;i<4;i++){
 			byte[] b;
-			b = Files.readAllBytes(Paths.get("C:\\Users\\geoinformacao.SENACEDU\\Downloads\\table.csv"));
+			b = Files.readAllBytes(Paths.get("D:\\Serie1.csv"));
 			String serie = new String(b,StandardCharsets.UTF_8);
 			records.add(serie);
 			

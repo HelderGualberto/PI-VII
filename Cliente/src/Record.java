@@ -11,12 +11,11 @@ public class Record implements Serializable{
 	public int id;
 	public List<CSVRecord> serie;
 	
-	public Record(int id, String file_path){
+	public Record(int id, String record){
 		this.id = id;
 		try {
-    		FileReader reader = new FileReader(file_path);
-			CSVParser fileParser = new CSVParser(reader, CSVFormat.EXCEL.withHeader());
-			serie = fileParser.getRecords();
+			CSVParser fileParser = CSVParser.parse(record,CSVFormat.EXCEL.withHeader());
+			this.serie = fileParser.getRecords();
 			fileParser.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -24,5 +23,4 @@ public class Record implements Serializable{
 			throw new RuntimeException("Error loading data");
 		}
 	}
-	
 }

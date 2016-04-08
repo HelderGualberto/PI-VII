@@ -5,10 +5,10 @@ import java.net.*;
 
 
 public class RExpressionReceiver extends Thread{
-	ArrayList<ExpressionResult> results;
+	ArrayList<GENode> results;
 	Socket connection;
 	
-	public RExpressionReceiver(ArrayList<ExpressionResult> er,Socket connection){
+	public RExpressionReceiver(ArrayList<GENode> er,Socket connection){
 		this.results = er;
 		this.connection = connection;
 	}
@@ -20,7 +20,7 @@ public class RExpressionReceiver extends Thread{
 			try {
 				input_stream = connection.getInputStream();
 				ObjectInputStream in_data =  new ObjectInputStream(input_stream);
-				ExpressionResult er= (ExpressionResult)in_data.readObject();
+				GENode er= (GENode)in_data.readObject();
 				this.results.add(er);
 				System.out.println("Result: " + er.result);
 			} catch (IOException e) {
