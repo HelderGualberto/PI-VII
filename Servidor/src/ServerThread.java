@@ -34,7 +34,7 @@ public class ServerThread extends Thread{
 	
     public void run(){
     	  
-		
+		//Code to receive the expression
     	while(!this.socket.isClosed()){	
     		try {
 				InputStream input_stream = this.socket.getInputStream();

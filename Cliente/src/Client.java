@@ -15,18 +15,17 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-public class control_client extends Thread{
+public class Client extends Thread{
 
 	LinkedList<ExpressionResult> expression_results;
 	List<String> records = new ArrayList<String>();
 	Socket connection;
 
 	//Constructor
-	public control_client(String root_path,String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException, IOException{
+	public Client(String IP,int port,LinkedList<ExpressionResult> r_exp) throws InterruptedException, IOException{
 		expression_results = r_exp;
 		this.connect(IP, port);
 		this.send_series(this.connection);
-		this.sleep(50);
 	}
 	
 	public void run(){

@@ -18,14 +18,14 @@ public class MathResponse {
 	private double saldoInicial = 1000;
 	private ScriptEngineManager factory = new ScriptEngineManager();
     private ScriptEngine engine = factory.getEngineByName("JavaScript");
-	
-    public MathResponse(Record r){
+    
+    public void setup(Record r){
     	try {
     		this.records = r.serie;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("erro carga dados");
-		}
+		}	
     }
     
     private boolean isToBuy(List<CSVRecord> records2, int i, String formula) {
@@ -70,7 +70,7 @@ public class MathResponse {
 		
 	}
 
-    double testFormula(String formula) {
+    double testFormula(String formula) throws Exception{
 		double saldo = saldoInicial;
 		double saldoComprado = 0;
 		double saldoVendido = 0;

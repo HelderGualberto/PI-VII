@@ -6,12 +6,12 @@ import java.util.*;
 import java.io.*;
 
 
-public class record implements Serializable{
+public class Record implements Serializable{
 
 	public int id;
 	public List<CSVRecord> serie;
 	
-	public record(int id, String file_path){
+	public Record(int id, String file_path){
 		this.id = id;
 		try {
     		FileReader reader = new FileReader(file_path);

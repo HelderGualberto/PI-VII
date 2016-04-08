@@ -19,7 +19,7 @@ public class Record implements Serializable{
 	public Record(int id, String record){
 		this.id = id;
 		try {
-			CSVParser fileParser = CSVParser.parse(record,CSVFormat.DEFAULT);
+			CSVParser fileParser = CSVParser.parse(record,CSVFormat.EXCEL.withHeader("Date","Open","High","Low","Close"));
 			this.serie = fileParser.getRecords();
 			fileParser.close();
 		} catch (Exception e) {

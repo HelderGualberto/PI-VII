@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -13,7 +15,8 @@ public class Slave {
 	//------------------------------------------------GLOBAL VARIABLES-----------------------------------------------
 	ServerSocket serverSocket;
 	List<Record> series;
-	LinkedList<Expression> espressions = new LinkedList<Expression>();
+	LinkedList<Expression> expressions = new LinkedList<Expression>();
+	ArrayList<ExpressionResult> results = new ArrayList<ExpressionResult>();
 	
 	//------------------------------------------------CONSTRUCTOR-----------------------------------------------
 	public Slave() throws IOException{
@@ -50,13 +53,14 @@ public class Slave {
 	public static void main(String arg[]) throws IOException {
 		Slave servidor = new Slave();
 		BroadcastReceiver UDP_receiver = new BroadcastReceiver();
+		MathResponse calculator = new MathResponse();
 		
 		while(true){
 			System.out.println("Server UP!");
 			System.out.println("Start listening broadcast!");
 			UDP_receiver.bonjuor();
 			Socket socket = servidor.serverSocket.accept();
-			ServerThread connection = new ServerThread(socket,servidor.espressions);
+			ServerThread connection = new ServerThread(socket,servidor.expressions);
 			servidor.receive_series(socket);
 			
 			connection.start();
@@ -71,7 +75,32 @@ public class Slave {
 			}
 			*/
 			while(connection.isAlive()){
-				
+				ExpressionResult exp_r;
+				if(!servidor.expressions.isEmpty()){
+					Expression exp = servidor.expressions.removeFirst();
+					double result;
+					for(Record r:servidor.series){
+						calculator.setup(r);
+						try{
+							result = calculator.testFormula(exp.expression);
+							exp_r = new ExpressionResult(result,exp.ID,r.id);
+							servidor.results.add(exp_r);
+							System.out.println("Resultado: " + result);
+						}catch(Exception e){
+							System.out.println("Error in MathResponse");
+							e.printStackTrace();
+						}
+							
+					}
+				}
+				//Condition to send the result array back
+				if(servidor.expressions.size()<servidor.results.size() || servidor.results.size() > 50){
+					OutputStream out_stream = socket.getOutputStream();
+					ObjectOutputStream out_data = new ObjectOutputStream(out_stream);
+					out_data.writeObject(servidor.results);
+					out_data.flush();
+					
+				}
 				//Pop from expression list
 				//Use the math calculator to get the result
 				//Send the result to client

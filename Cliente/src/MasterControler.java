@@ -24,9 +24,9 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import java.net.*;
 
-public class Cliente {
+public class MasterControler {
 	
-	//Funcao para simular a expressão do servidor de expressoes
+	//Funcao para simular a expressão do servidor de expressoes, atualmente a entrada e pelo terminal
 	static public LinkedList<Expression> get_expression() throws IOException{
 		
 		LinkedList<Expression> exp_list = new LinkedList<Expression>();
@@ -46,7 +46,7 @@ public class Cliente {
 		List<ServerInstance> servers_available; 
 		LinkedList<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
 		LinkedList<Expression> exp_list;// = new LinkedList<Expression>();//get list from server
-		List<control_client> c_control = new LinkedList<control_client>();		
+		List<Client> c_control = new LinkedList<Client>();		
 		
 		//Initiate the broadcast system. The sender system as well as IP receiver
 		Discover server_discover = new Discover();
@@ -56,7 +56,7 @@ public class Cliente {
 		
 		servers_available = server_discover.get_available_servers();
 		while(servers_available.isEmpty()){
-			servers_available = server_discover.get_available_servers(); //linha bizarra			
+			servers_available = server_discover.get_available_servers();			
 		}
 
 		ServerInstance tmp;
@@ -64,13 +64,13 @@ public class Cliente {
 		while(!servers_available.isEmpty()){
 			tmp = servers_available.remove(0);
 			//Send the parameters: CSV path, Host IP, Port, List of result expressions
-			control_client client = new control_client("",tmp.ip_address.getHostAddress().toString(),10000,r_exp);
+			Client client = new Client(tmp.ip_address.getHostAddress().toString(),10000,r_exp);
 			c_control.add(client);
 			client.start();
 		}
 		exp_list = get_expression();
 		
-		Iterator<control_client> i_control = c_control.iterator();
+		Iterator<Client> i_control = c_control.iterator();
 		while(true){
 			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
