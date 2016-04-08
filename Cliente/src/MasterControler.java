@@ -34,6 +34,7 @@ public class MasterControler {
 		
 		System.in.read(buffer, 0, 499);
 		String a = new String(buffer,StandardCharsets.UTF_8);
+		a = a.trim();
 		Expression exp = new Expression(a,1);
 		exp_list.add(exp);
 		return exp_list;

@@ -65,10 +65,6 @@ public class Client extends Thread{
 	}
 	
 	public void send_expressions(Expression exp) throws IOException, InterruptedException{
-		this.send(exp);
-	}
-	
-	private void send(Expression exp) throws IOException{
 		System.out.println("Transfering Data");
 		OutputStream out = this.connection.getOutputStream();
 		ObjectOutputStream out_object = new ObjectOutputStream(out);
@@ -84,6 +80,7 @@ public class Client extends Thread{
 			b = Files.readAllBytes(Paths.get("D:\\Serie1.csv"));
 			String serie = new String(b,StandardCharsets.UTF_8);
 			records.add(serie);
+			
 			
 			//Send the list of string series to the server
 			OutputStream out = con.getOutputStream();
