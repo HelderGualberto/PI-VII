@@ -77,17 +77,25 @@ public class Client extends Thread{
 	//------------------------------------------Send the series to slave server (initialization)-------------------------------
 	private void send_series(Socket con){
 		try{
-			String path;
-			//for(int i=1;i<4;i++){
-			byte[] b;
-			b = Files.readAllBytes(Paths.get("D:\\Serie1.csv"));
-			String serie = new String(b,StandardCharsets.UTF_8);
-			records.add(serie);
 			
-			//Send the list of string series to the server
-			OutputStream out = con.getOutputStream();
-			ObjectOutputStream out_object = new ObjectOutputStream(out);
-			out_object.writeObject(records); out_object.flush();
+			String root_path = new File("..\\").getCanonicalPath()+"\\Series\\";
+			File[] files = new File(root_path).listFiles();
+			
+			for(File f:files){
+				String path = root_path+f.getName();
+				byte[] b;
+				b = Files.readAllBytes(Paths.get(path));
+				String serie = new String(b,StandardCharsets.UTF_8);
+				records.add(serie);
+				
+				//Send the list of string series to the server
+				OutputStream out = con.getOutputStream();
+				ObjectOutputStream out_object = new ObjectOutputStream(out);
+				out_object.writeObject(records); out_object.flush();
+				
+			}
+			
+			
 			
 		}catch (Exception e){
 			e.printStackTrace();
