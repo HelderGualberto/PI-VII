@@ -15,7 +15,7 @@ public class Record implements Serializable{
 		try {
 			CSVParser fileParser = CSVParser.parse(record,CSVFormat.EXCEL.withHeader());
 			this.serie = fileParser.getRecords();
-			this.active_name = this.serie.get(0).get(0);
+			active_name = "static";
 			fileParser.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
