@@ -80,7 +80,7 @@ public class MathResponse {
 		int unsucessCount = 0;
 
 		int n = records.size();
-		for(int i=n-2;i>1;i--){
+		for(int i=n-1;i>1;i--){
 			double priceAtual = Double.parseDouble(records.get(i).get("Close"));
 			
 			if( qtdAtual == 0 ){
