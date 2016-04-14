@@ -105,13 +105,15 @@ public class Slave {
 					ObjectOutputStream out_data = new ObjectOutputStream(out_stream);
 					out_data.writeObject(r);
 					out_data.flush();
-					
 				}
 				//Pop from expression list
 				//Use the math calculator to get the result
 				//Send the result to client
 			}	
 			socket.close();
+			servidor.series.clear();
+			servidor.expressions.clear();
+			servidor.results.clear();
 		}	
 	}
 }
