@@ -38,16 +38,27 @@ public class Slave {
 		Record r;
 		try{
 			List<String> s_series = (List<String>)input_data.readObject();
-			int id = 0;
 			for(String s: s_series){
 				r = get_csv_from_string(s);
 				this.series.add(r);
-				id++;
 			}
 		
 		}catch(ClassNotFoundException e){
 			e.printStackTrace();
 		}
+		input_stream = socket.getInputStream();
+		input_data = new ObjectInputStream(input_stream);
+		try{
+			List<String> serie_name = (List<String>)input_data.readObject();
+			for(int i=0;i<serie_name.size();i++){
+				System.out.println(serie_name.get(i));
+				this.series.get(i).active_name = serie_name.get(i);
+			}
+			
+		}catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	//------------------------------------------------MAIN FUNCTION-----------------------------------------------
