@@ -44,11 +44,26 @@ public class Client extends Thread{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				try {
+					this.connection.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			//	return;
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				try {
+					this.connection.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//	return;
 			}
 		}
+		System.out.println("Server down!");
 	}
 	
 	//---------------------------------------Initiate a connection with the slave server-------------------------------------------

@@ -40,7 +40,6 @@ public class MasterControler {
 	
 	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException{
 		
-		
 		List<ServerInstance> servers_available; 
 		List<ExpressionResult> r_exp = new LinkedList<ExpressionResult>();
 		r_exp = Collections.synchronizedList(r_exp);//Syncronize the list with other threads
@@ -79,17 +78,18 @@ public class MasterControler {
 					Client c = i_control.next();
 					if(c.isAlive())
 						c.send_expressions(exp_list.removeFirst());
-					else
-						{
-						System.out.println("Server down!");
-						return;
-						}
+					else{
+						c_control.remove(c);
+						break;
+					}
 				}
 				else
 					i_control = c_control.iterator();
 				exp_list = get_expression();
 			}
-			break;
+			if(c_control.isEmpty()){
+				break;
+			}
 			// SEND RESULT EXPRESSIONS TO EXPRESSION CLIENT
 			// UPDATE EXPRESSIONS FROM EXPRESSION CLIENT
 			
