@@ -76,12 +76,20 @@ public class MasterControler {
 			while(!exp_list.isEmpty()){
 
 				if(i_control.hasNext()){
-					i_control.next().send_expressions(exp_list.removeFirst());
+					Client c = i_control.next();
+					if(c.isAlive())
+						c.send_expressions(exp_list.removeFirst());
+					else
+						{
+						System.out.println("Server down!");
+						return;
+						}
 				}
 				else
 					i_control = c_control.iterator();
 				exp_list = get_expression();
 			}
+			break;
 			// SEND RESULT EXPRESSIONS TO EXPRESSION CLIENT
 			// UPDATE EXPRESSIONS FROM EXPRESSION CLIENT
 			
