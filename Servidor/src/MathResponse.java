@@ -15,7 +15,7 @@ import org.apache.commons.csv.CSVRecord;
 public class MathResponse {
 	
 	List<CSVRecord> records;
-	private double saldoInicial = 1000;
+	private double saldoInicial = 1000.0;
 	private ScriptEngineManager factory = new ScriptEngineManager();
     private ScriptEngine engine = factory.getEngineByName("JavaScript");
     
