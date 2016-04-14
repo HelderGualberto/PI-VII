@@ -80,8 +80,10 @@ public class Client extends Thread{
 			
 			String root_path = new File("..\\").getCanonicalPath()+"\\Series\\";
 			File[] files = new File(root_path).listFiles();
+			List<String> serie_names = new ArrayList<String>();
 			
 			for(File f:files){
+				serie_names.add(f.getName());
 				String path = root_path+f.getName();
 				path = path.trim();
 				System.out.println(path);
@@ -89,11 +91,15 @@ public class Client extends Thread{
 				b = Files.readAllBytes(Paths.get(path));
 				String serie = new String(b,StandardCharsets.UTF_8);
 				records.add(serie);
-				//Send the list of string series to the server
 			}
+			//Send the list of string series to the server
 			OutputStream out = con.getOutputStream();
 			ObjectOutputStream out_object = new ObjectOutputStream(out);
 			out_object.writeObject(records); out_object.flush();
+			//Send the serie names to the server
+			out = con.getOutputStream();
+			out_object = new ObjectOutputStream(out);
+			out_object.writeObject(serie_names); out_object.flush();
 			
 			
 		}catch (Exception e){
