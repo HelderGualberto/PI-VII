@@ -11,6 +11,10 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import StandardObjects.Expression;
+import StandardObjects.ExpressionResult;
+import StandardObjects.Record;
+
 public class Slave {
 	//------------------------------------------------GLOBAL VARIABLES-----------------------------------------------
 	ServerSocket serverSocket;

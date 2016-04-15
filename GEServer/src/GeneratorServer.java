@@ -5,6 +5,9 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import StandardObjects.Expression;
+import StandardObjects.ExpressionResult;
+
 
 public class GeneratorServer {
 	
