@@ -26,18 +26,31 @@ public class GeneratorServer {
 		List<ExpressionResult> r_exp = new ArrayList<ExpressionResult>();
 		r_exp = Collections.synchronizedList(r_exp);
 		
+		ResultReceiver receiver;
+		
 		while(true){
+			System.out.println("Waiting connection");
 			Socket connection = con_receiver.accept();//Wait for a connection
+			System.out.println("Connected with: "+connection.getInetAddress().getHostAddress().toString());
 			OutputStream out_stream;
 			ObjectOutputStream data_out;
 			
+			receiver = new ResultReceiver(connection, r_exp);
+			receiver.start();
+			
 			while(!connection.isClosed()){
 				get_expression(expressions);
-				if(!expressions.isEmpty()){
-						out_stream = connection.getOutputStream();
-						data_out = new ObjectOutputStream(out_stream);
-						data_out.writeObject(expressions.remove(0));
-						data_out.flush();
+				try{
+					if(!expressions.isEmpty()){
+							out_stream = connection.getOutputStream();
+							data_out = new ObjectOutputStream(out_stream);
+							data_out.writeObject(expressions.remove(0));
+							data_out.flush();
+					}
+				}catch(SocketException e){
+					e.printStackTrace();
+					connection.close();
+					break;
 				}
 			}
 			

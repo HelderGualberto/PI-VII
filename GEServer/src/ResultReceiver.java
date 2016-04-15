@@ -14,7 +14,7 @@ public class ResultReceiver extends Thread{
 	}
 	
 	public void run(){
-		
+		System.out.println("Start receiving Expression result");
 		while(!connection.isClosed()){
 			InputStream input_stream;
 			ObjectInputStream data_in;
