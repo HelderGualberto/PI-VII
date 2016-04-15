@@ -108,7 +108,6 @@ public class MasterControler {
 		}
 		
 		//-----------------------------------------------------------------------------
-		exp_list = get_expression();
 		Iterator<Client> i_control = c_control.iterator();
 		while(true){
 			/*
