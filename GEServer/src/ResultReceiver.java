@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import StandardObjects.ExpressionResult;
 
@@ -8,7 +9,7 @@ import StandardObjects.ExpressionResult;
 public class ResultReceiver extends Thread{
 
 	List<ExpressionResult> results;
-	public Socket connection;
+	public Socket connection;	
 	
 	public ResultReceiver(Socket connection, List<ExpressionResult> results){
 		this.results = results;
