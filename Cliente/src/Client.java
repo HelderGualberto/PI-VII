@@ -104,7 +104,7 @@ public class Client extends Thread{
 				serie_names.add(f.getName());
 				String path = root_path+f.getName();
 				path = path.trim();
-				System.out.println(path);
+				//System.out.println(path);
 				byte[] b;
 				b = Files.readAllBytes(Paths.get(path));
 				String serie = new String(b,StandardCharsets.UTF_8);

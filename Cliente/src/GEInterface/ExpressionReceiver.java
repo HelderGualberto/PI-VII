@@ -1,12 +1,12 @@
 package GEInterface;
 import java.net.InetAddress;
 import java.net.Socket;
-import StandardObjects.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.io.*;
 import java.net.*;
+import StandardObjects.*;
 
 public class ExpressionReceiver extends Thread{
 	public Socket connection;

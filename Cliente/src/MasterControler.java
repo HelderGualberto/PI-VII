@@ -116,7 +116,7 @@ public class MasterControler {
 			 */
 			//implementar algum tipo de BLOCK
 			
-			//Send the expressions to the server calculator
+			//Send the expressions to the server calculatorg
 			while(!exp_list.isEmpty()){
 				
 				//send the expressions for all servers (slaves) connected, like a circular list
