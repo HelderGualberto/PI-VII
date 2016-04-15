@@ -1,7 +1,10 @@
+package Broadcast;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import StandardObjects.ServerInstance;
 
 public class DiscoverListener extends Thread{
 

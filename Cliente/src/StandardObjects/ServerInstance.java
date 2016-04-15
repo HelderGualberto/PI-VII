@@ -1,10 +1,11 @@
+package StandardObjects;
 import java.net.*;
 
 
 public class ServerInstance {
 
-	int id;
-	InetAddress ip_address;
+	public int id;
+	public InetAddress ip_address;
 	
 	public ServerInstance(int id,InetAddress ip){
 		this.id = id;

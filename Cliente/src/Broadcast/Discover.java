@@ -1,3 +1,4 @@
+package Broadcast;
 
 
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.*;
 // see https://github.com/brunoapimentel/chat.git
+
+import StandardObjects.ServerInstance;
 
 public class Discover extends Thread{
 

@@ -1,9 +1,10 @@
+package StandardObjects;
 import java.io.*;
 
 public class Expression implements Serializable{
 	
-	String expression;
-	int ID;
+	public String expression;
+	public int ID;
 	
 	public Expression(String expression,int ID) {
 		this.expression = expression;

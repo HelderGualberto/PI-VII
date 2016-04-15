@@ -15,6 +15,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import StandardObjects.Expression;
+import StandardObjects.ExpressionResult;
+
 public class Client extends Thread{
 
 	List<ExpressionResult> expression_results;
