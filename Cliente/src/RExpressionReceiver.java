@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import StandardObjects.ExpressionResult;
 
@@ -8,10 +9,10 @@ import java.net.*;
 
 
 public class RExpressionReceiver extends Thread{
-	ArrayList<ExpressionResult> results;
+	ArrayBlockingQueue<ExpressionResult> results;
 	Socket connection;
 	
-	public RExpressionReceiver(ArrayList<ExpressionResult> er,Socket connection){
+	public RExpressionReceiver(ArrayBlockingQueue<ExpressionResult> er,Socket connection){
 		this.results = er;
 		this.connection = connection;
 	}

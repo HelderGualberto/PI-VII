@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.naming.spi.ObjectFactoryBuilder;
 
@@ -20,12 +21,12 @@ import StandardObjects.ExpressionResult;
 
 public class Client extends Thread{
 
-	List<ExpressionResult> expression_results;
+	ArrayBlockingQueue<ExpressionResult> expression_results;
 	List<String> records = new ArrayList<String>();
 	Socket connection;
 
 	//-----------------------------------------Constructor-----------------------------------------
-	public Client(String IP,int port,List<ExpressionResult> r_exp) throws InterruptedException, IOException{
+	public Client(String IP,int port,ArrayBlockingQueue<ExpressionResult> r_exp) throws InterruptedException, IOException{
 		expression_results = r_exp;
 		this.connect(IP, port);
 		this.send_series(this.connection);
@@ -78,10 +79,6 @@ public class Client extends Thread{
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-	}
-	
-	public List<ExpressionResult> get_expression_result(){
-		return this.expression_results;
 	}
 	
 	//-------------------------------------------Send the expressions to slave server---------------------------------

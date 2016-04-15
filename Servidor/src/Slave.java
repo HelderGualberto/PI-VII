@@ -101,6 +101,7 @@ public class Slave {
 						}
 							
 					}
+					
 				}
 				//Condition to send the result array back
 				if(!servidor.results.isEmpty()){

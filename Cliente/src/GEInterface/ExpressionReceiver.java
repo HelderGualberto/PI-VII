@@ -2,6 +2,7 @@ package GEInterface;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.io.*;
@@ -10,9 +11,9 @@ import StandardObjects.*;
 
 public class ExpressionReceiver extends Thread{
 	public Socket connection;
-	List<Expression> expressions;
+	ArrayBlockingQueue<Expression> expressions;
 	
-	public ExpressionReceiver(List<Expression> exps,String ip){
+	public ExpressionReceiver(ArrayBlockingQueue<Expression> exps,String ip){
 		this.expressions = exps;
 		
 		try {

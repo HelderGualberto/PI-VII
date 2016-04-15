@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.io.FileReader;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import javax.sound.midi.Receiver;
@@ -64,11 +65,9 @@ public class MasterControler {
 		
 		List<ServerInstance> servers_available; 
 		
-		List<ExpressionResult> result_exp = new ArrayList<ExpressionResult>();
-		result_exp = Collections.synchronizedList(result_exp);//Synchronize the list with other threads
-		
-		List<Expression> exp_list = new LinkedList<Expression>();//Synchronize the list with the Expression receiver thread
-		exp_list = Collections.synchronizedList(exp_list);
+		ArrayBlockingQueue<ExpressionResult> result_exp = new ArrayBlockingQueue<ExpressionResult>(200000);
+	
+		ArrayBlockingQueue<Expression> exp_list = new ArrayBlockingQueue<Expression>(200000);//Synchronize the list with the Expression receiver thread
 		
 		List<Client> c_control = new LinkedList<Client>();		
 		//-----------------------------------------------------------------------------
@@ -123,7 +122,7 @@ public class MasterControler {
 				if(i_control.hasNext()){
 					Client c = i_control.next();
 					if(c.isAlive())
-						c.send_expressions(exp_list.remove(0));
+						c.send_expressions(exp_list.remove());
 					else{
 						c_control.remove(c);
 						break;
@@ -135,7 +134,7 @@ public class MasterControler {
 				if(!result_exp.isEmpty()){
 					out_stream = expression_receiver.connection.getOutputStream();
 					data_out = new ObjectOutputStream(out_stream);
-					data_out.writeObject(result_exp.remove(0));data_out.flush();
+					data_out.writeObject(result_exp.remove());data_out.flush();
 				}
 			}
 			if(c_control.isEmpty()){
@@ -144,7 +143,7 @@ public class MasterControler {
 			if(!result_exp.isEmpty()){
 				out_stream = expression_receiver.connection.getOutputStream();
 				data_out = new ObjectOutputStream(out_stream);
-				data_out.writeObject(result_exp.remove(0));data_out.flush();
+				data_out.writeObject(result_exp.remove());data_out.flush();
 			}			
 		}
 	}
