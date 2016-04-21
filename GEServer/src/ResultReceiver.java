@@ -26,6 +26,7 @@ public class ResultReceiver extends Thread{
 				data_in = new ObjectInputStream(input_stream);
 				ExpressionResult r = (ExpressionResult)data_in.readObject();
 				this.results.add(r);
+				System.out.println("Result: "+r.result);
 			} catch (IOException e) {
 				try {
 					this.connection.close();
