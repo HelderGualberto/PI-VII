@@ -22,6 +22,7 @@ public class Slave {
 	LinkedList<Expression> expressions = new LinkedList<Expression>();
 	List<ExpressionResult> results = new LinkedList<ExpressionResult>();
 	
+	
 	//------------------------------------------------CONSTRUCTOR-----------------------------------------------
 	public Slave() throws IOException{
 		this.results = Collections.synchronizedList(results);
@@ -69,14 +70,14 @@ public class Slave {
 	public static void main(String arg[]) throws IOException {
 		Slave servidor = new Slave();
 		BroadcastReceiver UDP_receiver = new BroadcastReceiver();
-		MathResponse calculator = new MathResponse();
+		
 		
 		while(true){
 			System.out.println("Server UP!");
 			System.out.println("Start listening broadcast!");
 			UDP_receiver.bonjuor();
 			Socket socket = servidor.serverSocket.accept();
-			ServerThread connection = new ServerThread(socket,servidor.expressions);
+			SEReceiver connection = new SEReceiver(socket,servidor.expressions);
 			servidor.receive_series(socket);
 			
 			connection.start();
@@ -89,12 +90,9 @@ public class Slave {
 					Expression exp = servidor.expressions.removeFirst();
 					double result;
 					for(Record r:servidor.series){
-						calculator.setup(r);
+						ExpTester tester = new ExpTester(r,(LinkedList<ExpressionResult>)servidor.results,exp);
 						try{
-							result = calculator.testFormula(exp.expression);
-							exp_r = new ExpressionResult(result,r.active_name,exp.ID);
-							servidor.results.add(exp_r);
-							System.out.println("Resultado: " + result);
+							tester.start();
 						}catch(Exception e){
 							System.out.println("Error in MathResponse");
 							e.printStackTrace();
@@ -103,7 +101,7 @@ public class Slave {
 					}
 					
 				}
-				//Condition to send the result array back
+				//Condition to send the result expression back
 				if(!servidor.results.isEmpty()){
 					ExpressionResult r = servidor.results.remove(0);
 					OutputStream out_stream = socket.getOutputStream();

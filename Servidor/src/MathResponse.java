@@ -1,4 +1,5 @@
 import java.io.FileReader;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.script.Bindings;
@@ -13,8 +14,9 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import StandardObjects.Record;
+import StandardObjects.*;
 
-public class MathResponse {
+public class MathResponse{
 	
 	List<CSVRecord> records;
 	private double saldoInicial = 1000.0;
@@ -72,7 +74,7 @@ public class MathResponse {
 		
 	}
 
-    double testFormula(String formula) throws Exception{
+    public double testFormula(String formula) throws Exception{
 		double saldo = saldoInicial;
 		double saldoComprado = 0;
 		double saldoVendido = 0;
@@ -140,8 +142,6 @@ public class MathResponse {
 			p = (double)sucessCount/(double)(sucessCount+unsucessCount);
 			
 		}
-		
-		
 		return p;
 	}
 

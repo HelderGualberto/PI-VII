@@ -14,13 +14,12 @@ import StandardObjects.Expression;
 
 import java.io.*;
 
-public class ServerThread extends Thread{
+public class SEReceiver extends Thread{
 	
 	Socket socket;
-//	MathResponse calculadora = new MathResponse();
 	LinkedList<Expression> expressions;
 	
-	public ServerThread(Socket socket,LinkedList<Expression> exps) {
+	public SEReceiver(Socket socket,LinkedList<Expression> exps) {
 		this.socket = socket;
 		this.expressions = exps;
 	}
@@ -56,27 +55,5 @@ public class ServerThread extends Thread{
     		
     	}
 
-		
-    	
-//    	InputStream is;
-//		try {
-//			is = socket.getInputStream();
-//			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-//			//String str = reader.readLine();
-//			//double testFormula = calculadora.testFormula(str);
-//			OutputStream out = socket.getOutputStream();
-//			OutputStreamWriter outwriter = new OutputStreamWriter(out);
-//			PrintWriter prtWriter = new PrintWriter(outwriter);
-//			prtWriter.println("RESULTADO  asdasdasdasd");
-//			//prtWriter.println("RESULTADO  " + testFormula);
-//			prtWriter.flush();
-//			socket.close();
-//
-//
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//
-//		}	
     }
 }
