@@ -56,7 +56,7 @@ public class GeneratorServer {
 					break;
 				}
 			}
-			
+			con_receiver.close();
 		}	
 	}
 
