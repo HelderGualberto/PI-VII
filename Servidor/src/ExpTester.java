@@ -1,15 +1,20 @@
-import java.awt.List;
+import java.util.List;
 import java.util.LinkedList;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import StandardObjects.ExpressionResult;
 
 import StandardObjects.*;
 
 public class ExpTester extends Thread{
 	private Record record;
-	public LinkedList<ExpressionResult> results;
+	List<ExpressionResult> results;
 	public Expression exp_to_test;
 	
 	
-	public ExpTester(Record r, LinkedList<ExpressionResult> results, Expression exp) {
+	public ExpTester(Record r, List<ExpressionResult> results, Expression exp) {
 		this.record = r;
 		this.results = results;
 		this.exp_to_test = exp;

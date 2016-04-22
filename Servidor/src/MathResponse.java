@@ -19,7 +19,7 @@ import StandardObjects.*;
 public class MathResponse{
 	
 	List<CSVRecord> records;
-	private double saldoInicial = 1000.0;
+	private double saldoInicial = 10000000.0;
 	private ScriptEngineManager factory = new ScriptEngineManager();
     private ScriptEngine engine = factory.getEngineByName("JavaScript");
     

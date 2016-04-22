@@ -90,7 +90,7 @@ public class Slave {
 					Expression exp = servidor.expressions.removeFirst();
 					double result;
 					for(Record r:servidor.series){
-						ExpTester tester = new ExpTester(r,(LinkedList<ExpressionResult>)servidor.results,exp);
+						ExpTester tester = new ExpTester(r,servidor.results,exp);
 						try{
 							tester.start();
 						}catch(Exception e){
