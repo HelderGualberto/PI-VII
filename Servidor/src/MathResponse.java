@@ -47,13 +47,13 @@ public class MathResponse{
 				double open = Double.parseDouble(openStr);
 				
 				String highStr = records.get(idx).get("High");
-				double max = Double.parseDouble(openStr);
+				double max = Double.parseDouble(highStr);
 				
 				String lowStr = records.get(idx).get("Low");
-				double min = Double.parseDouble(openStr);
+				double min = Double.parseDouble(lowStr);
 				
 				String closeStr = records.get(idx).get("Close");
-				double close = Double.parseDouble(openStr);
+				double close = Double.parseDouble(closeStr);
 	        	String cotacao = "P"+j;
 	        	engineScope.put(cotacao+"_OPEN" ,open );
 	        	engineScope.put(cotacao+"_CLOSE",close);
@@ -64,12 +64,15 @@ public class MathResponse{
 			String result="false";
 			try {
 				result = engine.eval(formula, newContext).toString();
+				if(result.equals("1"))
+					result = "true";
 			} catch (ScriptException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				//throw new RuntimeException("erro javascript ou formula");
 			}
-            return Boolean.parseBoolean(result.toString());
+			
+            return new Boolean(result);
 		}
 		
 	}
@@ -138,6 +141,9 @@ public class MathResponse{
 		}
 		
 		double p =0;
+		System.out.println("Sucess: "+sucessCount);
+		System.out.println("Unsucess: "+unsucessCount);
+		
 		if(sucessCount+unsucessCount>0){
 			p = (double)sucessCount/(double)(sucessCount+unsucessCount);
 			

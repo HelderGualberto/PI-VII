@@ -86,12 +86,15 @@ public class Slave {
 		
 			while(connection.isAlive()){
 				ExpressionResult exp_r;
+				while(Thread.activeCount() > 20);
+				
 				if(!servidor.expressions.isEmpty()){
 					Expression exp = servidor.expressions.removeFirst();
 					double result;
 					for(Record r:servidor.series){
 						ExpTester tester = new ExpTester(r,servidor.results,exp);
 						try{
+							System.out.println("N thread: "+Thread.activeCount());
 							tester.start();
 						}catch(Exception e){
 							System.out.println("Error in MathResponse");
