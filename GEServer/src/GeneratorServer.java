@@ -12,15 +12,26 @@ import StandardObjects.ExpressionResult;
 public class GeneratorServer {
 	
 	static public void get_expression(List<Expression> expressions) throws IOException{
-		
+		/*
 		byte[] buffer = new byte[500];
 		System.out.print("Enter the expression: ");
 		System.in.read(buffer, 0, 499);
 		String a = new String(buffer,StandardCharsets.UTF_8);
 		a = a.trim();
 		Expression exp = new Expression(a,1);
-		expressions.add(exp);
+		expressions.add(exp);*/
+		int id = 0;
+			try (BufferedReader br = new BufferedReader(new FileReader("c:/users/hellder/Downloads/filename.txt"))) {
+			    String line;
+			    while ((line = br.readLine()) != null) {
+			    	line = line.trim();
+				    Expression exp = new Expression(line,id);
+					expressions.add(exp);
+					id++;
+			    }
+			}
 	}
+	
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
