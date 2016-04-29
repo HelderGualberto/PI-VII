@@ -12,7 +12,9 @@ import StandardObjects.ExpressionResult;
 public class GeneratorServer {
 	
 	static public void get_expression(List<Expression> expressions) throws IOException{
-		/*//CODIGO PARA SIMULAR A RECEPCAO DAS SERIES A PARTIRA DA ENTRADA VIA TERMINAL
+		
+		/*
+		//CODIGO PARA SIMULAR A RECEPCAO DAS SERIES A PARTIRA DA ENTRADA VIA TERMINAL
 		byte[] buffer = new byte[500];
 		System.out.print("Enter the expression: ");
 		System.in.read(buffer, 0, 499);
@@ -20,15 +22,15 @@ public class GeneratorServer {
 		a = a.trim();
 		Expression exp = new Expression(a,1);
 		expressions.add(exp);
-		
 		*/
+		
 		 // CODIGO PARA SIMULAR A RECEPCAO DAS EXP A PARTIR DE UM ARQUIVO TEXTO
 		int id = 0;
 			try (BufferedReader br = new BufferedReader(new FileReader("c:/users/helder/Downloads/filename.txt"))) {
 			    String line;
 			    while ((line = br.readLine()) != null) {
 			    	line = line.trim();
-				    Expression exp = new Expression(line,id);
+				    Expression exp = new Expression(line,id+"");
 					expressions.add(exp);
 					id++;
 			    }
