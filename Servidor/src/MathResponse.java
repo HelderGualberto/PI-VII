@@ -20,17 +20,22 @@ public class MathResponse{
 	
 	List<CSVRecord> records;
 	private double saldoInicial = 10000000.0;
-	private ScriptEngineManager factory = new ScriptEngineManager();
-    private ScriptEngine engine = factory.getEngineByName("JavaScript");
+	private ScriptEngineManager factory ;
+    private ScriptEngine engine ;
     
     public void setup(Record r){
     	try {
     		this.records = r.serie;
+    		this.factory = r.factory;
+    		this.engine = r.engine;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("erro carga dados");
 		}	
     }
+    
+    ScriptContext newContext = new SimpleScriptContext();
+    Bindings engineScope = newContext.getBindings(ScriptContext.ENGINE_SCOPE);
     
     private boolean isToBuy(List<CSVRecord> records2, int i, String formula) {
 		int n = records2.size();
@@ -38,9 +43,7 @@ public class MathResponse{
 			return false;
 		} else {
 			
-			ScriptContext newContext = new SimpleScriptContext();
-	        Bindings engineScope = newContext.getBindings(ScriptContext.ENGINE_SCOPE);
-	        			
+						
 			for(int j=1; j<=5;j++){
 				int idx = i+j-1;
 				String openStr = records.get(idx).get("Open");

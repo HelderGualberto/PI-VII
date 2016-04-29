@@ -4,6 +4,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import java.io.*;
 import java.util.*;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 import java.io.*;
 
 
@@ -11,6 +15,9 @@ public class Record implements Serializable{
 
 	public String active_name;
 	public List<CSVRecord> serie;
+	
+	public ScriptEngineManager factory = new ScriptEngineManager();
+    public ScriptEngine engine = factory.getEngineByName("JavaScript");
 	
 	public Record(String record){
 		try {
