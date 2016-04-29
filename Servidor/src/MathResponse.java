@@ -141,8 +141,8 @@ public class MathResponse{
 		}
 		
 		double p =0;
-		System.out.println("Sucess: "+sucessCount);
-		System.out.println("Unsucess: "+unsucessCount);
+		//System.out.println("Sucess: "+sucessCount);
+		//System.out.println("Unsucess: "+unsucessCount);
 		
 		if(sucessCount+unsucessCount>0){
 			p = (double)sucessCount/(double)(sucessCount+unsucessCount);

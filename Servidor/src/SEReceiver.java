@@ -42,7 +42,7 @@ public class SEReceiver extends Thread{
 				ObjectInputStream input_data = new ObjectInputStream(input_stream);
 				Expression exp = (Expression)input_data.readObject();
 				expressions.add(exp);
-				System.out.println("Input Data: " + exp.expression);
+				//System.out.println("Input Data: " + exp.expression);
 				
 			} catch (IOException e) {
 				e.printStackTrace();

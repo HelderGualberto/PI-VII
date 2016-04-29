@@ -83,18 +83,18 @@ public class Slave {
 			connection.start();
 			
 			System.out.println("Number of series:" + servidor.series.size());
-		
+			
+			ResultSender sender = new ResultSender(servidor.results);
+			sender.start();
+			
 			while(connection.isAlive()){
-				ExpressionResult exp_r;
 				while(Thread.activeCount() > 20);
 				
 				if(!servidor.expressions.isEmpty()){
 					Expression exp = servidor.expressions.removeFirst();
-					double result;
 					for(Record r:servidor.series){
 						ExpTester tester = new ExpTester(r,servidor.results,exp);
 						try{
-							System.out.println("N thread: "+Thread.activeCount());
 							tester.start();
 						}catch(Exception e){
 							System.out.println("Error in MathResponse");
@@ -105,13 +105,7 @@ public class Slave {
 					
 				}
 				//Condition to send the result expression back
-				if(!servidor.results.isEmpty()){
-					ExpressionResult r = servidor.results.remove(0);
-					OutputStream out_stream = socket.getOutputStream();
-					ObjectOutputStream out_data = new ObjectOutputStream(out_stream);
-					out_data.writeObject(r);
-					out_data.flush();
-				}
+				
 
 			}	
 			socket.close();
