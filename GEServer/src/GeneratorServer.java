@@ -55,9 +55,9 @@ public class GeneratorServer {
 			
 			receiver = new ResultReceiver(connection, r_exp);
 			receiver.start();
-			
+			get_expression(expressions);
+
 			while(!connection.isClosed()){
-				get_expression(expressions);
 				try{
 					if(!expressions.isEmpty()){
 							out_stream = connection.getOutputStream();

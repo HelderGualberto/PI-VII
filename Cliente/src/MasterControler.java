@@ -46,19 +46,19 @@ import GEInterface.*;
 
 public class MasterControler {
 	
-	//Funcao para simular a expressão do servidor de expressoes, atualmente a entrada e pelo terminal
-	static public LinkedList<Expression> get_expression() throws IOException{
-		
-		LinkedList<Expression> exp_list = new LinkedList<Expression>();
-		byte[] buffer = new byte[500];
-		
-		System.in.read(buffer, 0, 499);
-		String a = new String(buffer,StandardCharsets.UTF_8);
-		a = a.trim();
-		Expression exp = new Expression(a,1);
-		exp_list.add(exp);
-		return exp_list;
-	}
+//	//Funcao para simular a expressão do servidor de expressoes, atualmente a entrada e pelo terminal
+//	static public LinkedList<Expression> get_expression() throws IOException{
+//		
+//		LinkedList<Expression> exp_list = new LinkedList<Expression>();
+//		byte[] buffer = new byte[500];
+//		
+//		System.in.read(buffer, 0, 499);
+//		String a = new String(buffer,StandardCharsets.UTF_8);
+//		a = a.trim();
+//		Expression exp = new Expression(a,1);
+//		exp_list.add(exp);
+//		return exp_list;
+//	}
 	
 	
 	public static void main(String args[]) throws UnknownHostException, IOException, InterruptedException{
@@ -75,7 +75,7 @@ public class MasterControler {
 		//Create a connection with the expression generator server
 		ExpressionReceiver expression_receiver;
 		do{
-			expression_receiver = new ExpressionReceiver(exp_list,"192.168.0.8");
+			expression_receiver = new ExpressionReceiver(exp_list,"10.135.103.12");
 		}while(!expression_receiver.isConnected());
 		expression_receiver.start();
 		OutputStream out_stream;
