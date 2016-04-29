@@ -119,6 +119,7 @@ public class Client extends Thread{
 			
 		}catch (Exception e){
 			e.printStackTrace();
+			System.out.println("Problema ao enviar series");
 		}
 	}
 }	
