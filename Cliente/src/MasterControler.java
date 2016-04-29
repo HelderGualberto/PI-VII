@@ -39,7 +39,7 @@ import GEInterface.*;
  * 4445 - UDP BROADCAST SENDER
  * 4446 - UDP BROADCAST RECEIVER
  * 10010 - TCP CONNECTION WITH EXRPRESSION GENERATOR SERVER
- * 
+ * 7000 - TCP RECEIVE EXPRESSION RESULT FROM SLAVES
  * */
 
 
@@ -115,7 +115,7 @@ public class MasterControler {
 			 */
 			//implementar algum tipo de BLOCK
 			
-			//Send the expressions to the server calculatorg
+			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
 				
 				//send the expressions for all servers (slaves) connected, like a circular list

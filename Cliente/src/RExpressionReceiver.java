@@ -12,9 +12,9 @@ public class RExpressionReceiver extends Thread{
 	ArrayBlockingQueue<ExpressionResult> results;
 	Socket connection;
 	
-	public RExpressionReceiver(ArrayBlockingQueue<ExpressionResult> er,Socket connection){
+	public RExpressionReceiver(ArrayBlockingQueue<ExpressionResult> er,String ip, int port) throws UnknownHostException, IOException{
 		this.results = er;
-		this.connection = connection;
+		this.connection = new Socket(ip,port);
 	}
 	
 	public void run(){
@@ -26,9 +26,7 @@ public class RExpressionReceiver extends Thread{
 				ObjectInputStream in_data =  new ObjectInputStream(input_stream);
 				ExpressionResult er= (ExpressionResult)in_data.readObject();
 				this.results.add(er);
-				System.out.println("Exp ID: " + er.id);
-				System.out.println("ID ativo: " + er.active);
-				System.out.println("Result: " + er.result);
+				System.out.println("Exp ID: " + er.id + "-->"+er.result);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

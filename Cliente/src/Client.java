@@ -24,6 +24,7 @@ public class Client extends Thread{
 	ArrayBlockingQueue<ExpressionResult> expression_results;
 	List<String> records = new ArrayList<String>();
 	Socket connection;
+	ArrayList<Expression> local_exps = new ArrayList<>();
 
 	//-----------------------------------------Constructor-----------------------------------------
 	public Client(String IP,int port,ArrayBlockingQueue<ExpressionResult> r_exp) throws InterruptedException, IOException{
@@ -34,38 +35,36 @@ public class Client extends Thread{
 	
 	//----------------------Receive the result expressions from the slave server-----------------------------------------
 	public void run(){
+		String ip = this.connection.getInetAddress().getHostAddress().toString().trim();
+		try {
+			RExpressionReceiver receiver = new RExpressionReceiver(this.expression_results, ip, 7000);
+			receiver.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		while(!this.connection.isClosed()){
-			InputStream input_stream;
+			
+			OutputStream out;
 			try {
-				input_stream = connection.getInputStream();
-				ObjectInputStream in_data =  new ObjectInputStream(input_stream);
-				ExpressionResult er= (ExpressionResult)in_data.readObject();
-				this.expression_results.add(er);
-				System.out.println("Exp ID: " + er.id);
-				System.out.println("ID ativo: " + er.active);
-				System.out.println("Result: " + er.result);
-				
+				if(!local_exps.isEmpty()){
+					out = this.connection.getOutputStream();
+					ObjectOutputStream out_object = new ObjectOutputStream(out);
+					out_object.writeObject(local_exps.remove(0)); 
+					out_object.flush();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
 				try {
-					this.connection.close();
+					connection.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			//	return;
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				try {
-					this.connection.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				//	return;
 			}
+			
+			
 		}
 		System.out.println("Server down!");
 	}
@@ -83,11 +82,7 @@ public class Client extends Thread{
 	
 	//-------------------------------------------Send the expressions to slave server---------------------------------
 	public void send_expressions(Expression exp) throws IOException, InterruptedException{
-		System.out.println("Transfering Data");
-		OutputStream out = this.connection.getOutputStream();
-		ObjectOutputStream out_object = new ObjectOutputStream(out);
-		out_object.writeObject(exp); 
-		out_object.flush();
+		local_exps.add(exp);
 	}
 	//------------------------------------------Send the series to slave server (initialization)-------------------------------
 	private void send_series(Socket con){
