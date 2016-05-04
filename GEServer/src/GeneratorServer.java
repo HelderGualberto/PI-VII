@@ -25,14 +25,13 @@ public class GeneratorServer {
 		*/
 		
 		 // CODIGO PARA SIMULAR A RECEPCAO DAS EXP A PARTIR DE UM ARQUIVO TEXTO
-		int id = 0;
 			try (BufferedReader br = new BufferedReader(new FileReader("c:/users/helder/Downloads/filename.txt"))) {
 			    String line;
+			    String a= "teste";
 			    while ((line = br.readLine()) != null) {
 			    	line = line.trim();
-				    Expression exp = new Expression(line,id+"");
+				    Expression exp = new Expression(line,a);
 					expressions.add(exp);
-					id++;
 			    }
 			}
 			
