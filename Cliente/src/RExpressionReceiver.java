@@ -1,11 +1,8 @@
-import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.io.*;
+import java.net.*;
 
 import StandardObjects.ExpressionResult;
-
-import java.io.*;
-import java.lang.*;
-import java.net.*;
 
 
 public class RExpressionReceiver extends Thread{

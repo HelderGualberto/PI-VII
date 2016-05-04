@@ -1,15 +1,9 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 import StandardObjects.Expression;
 import StandardObjects.ExpressionResult;
@@ -42,6 +36,7 @@ public class Slave {
 		ObjectInputStream input_data = new ObjectInputStream(input_stream);
 		Record r;
 		try{
+			@SuppressWarnings("unchecked")
 			List<String> s_series = (List<String>)input_data.readObject();
 			for(String s: s_series){
 				r = get_csv_from_string(s);
@@ -54,6 +49,7 @@ public class Slave {
 		input_stream = socket.getInputStream();
 		input_data = new ObjectInputStream(input_stream);
 		try{
+			@SuppressWarnings("unchecked")
 			List<String> serie_name = (List<String>)input_data.readObject();
 			for(int i=0;i<serie_name.size();i++){
 				System.out.println(serie_name.get(i));

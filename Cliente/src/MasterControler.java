@@ -1,33 +1,11 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-import java.io.FileReader;
+//External imports
+import java.io.*;
+import java.net.*;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
-import javax.sound.midi.Receiver;
-
-import java.lang.*;
-import java.io.File;
-import java.time.*;
 import java.util.*;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-
+//Packages imports
 import Broadcast.Discover;
-
-import java.net.*;
-
 import StandardObjects.*;
 import GEInterface.*;
 

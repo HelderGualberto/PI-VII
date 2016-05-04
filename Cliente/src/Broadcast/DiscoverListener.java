@@ -9,6 +9,7 @@ import StandardObjects.ServerInstance;
 public class DiscoverListener extends Thread{
 
 	List<ServerInstance> instances;
+	private DatagramSocket dsocket;
 	
 	public DiscoverListener(List<ServerInstance> instances){
 		this.instances = instances;
@@ -18,8 +19,7 @@ public class DiscoverListener extends Thread{
 				
 		try {
 		      int port = 4446;
-		      // Create a socket to listen on the port.
-		      DatagramSocket dsocket = new DatagramSocket(port);
+		      dsocket = new DatagramSocket(port);
 	
 		      // Create a buffer to read datagrams into. If a
 		      // packet is larger than this buffer, the
@@ -37,22 +37,16 @@ public class DiscoverListener extends Thread{
 		    	  System.out.println("IP: " + packet.getAddress().toString()+" said "+ new String(packet.getData(),StandardCharsets.UTF_8));
 		    	  //Create a server instance that keep the computer id and IP
 		          ServerInstance instance = new ServerInstance(server_id, packet.getAddress());
-		          
 		          // Add the instance in the ServerInstance list
 		          this.instances.add(instance);
 		          server_id++;
 		          
-		        //dsocket.getLocalAddress();
-		        // Convert the contents to a string, and display them
-		        //String msg = new String(buffer, 0, packet.getLength());
-		        //System.out.println(packet.getAddress().getHostName() + ": "+ msg);
-	
-		        // Reset the length of the packet before reusing it.
-		        //packet.setLength(buffer.length);
 		      }
-		    } catch (Exception e) {
+		  } catch (Exception e) {
+		      
 		      System.err.println(e);
 		    }
+		
 		 
 	}
 	
