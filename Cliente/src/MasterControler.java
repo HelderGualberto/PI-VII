@@ -53,7 +53,7 @@ public class MasterControler {
 		//Create a connection with the expression generator server
 		ExpressionReceiver expression_receiver;
 		do{
-			expression_receiver = new ExpressionReceiver(exp_list,"10.135.103.12");
+			expression_receiver = new ExpressionReceiver(exp_list,"10.135.103.35");
 		}while(!expression_receiver.isConnected());
 		expression_receiver.start();
 		OutputStream out_stream;
@@ -99,8 +99,10 @@ public class MasterControler {
 				//send the expressions for all servers (slaves) connected, like a circular list
 				if(i_control.hasNext()){
 					Client c = i_control.next();
-					if(c.isAlive())
+					if(c.isAlive()){
+						//System.out.println("Buffer Size: " + exp_list.size());
 						c.send_expressions(exp_list.remove());
+					}
 					else{
 						c_control.remove(c);
 						break;

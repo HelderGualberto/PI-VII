@@ -23,7 +23,7 @@ public class RExpressionReceiver extends Thread{
 				ObjectInputStream in_data =  new ObjectInputStream(input_stream);
 				ExpressionResult er= (ExpressionResult)in_data.readObject();
 				this.results.add(er);
-				System.out.println("Exp ID: " + er.id + "-->"+er.result);
+				//System.out.println("Exp ID: " + er.id + "-->"+er.result);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

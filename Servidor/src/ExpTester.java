@@ -28,7 +28,7 @@ public class ExpTester extends Thread{
 			double result = calculator.testFormula(this.exp_to_test.expression);
 			ExpressionResult rexp = new ExpressionResult(result,record.active_name,this.exp_to_test.ID);
 			this.results.add(rexp);
-		//	System.out.println("Id: " + exp_to_test.ID + " --> " + "Resultado = " + result);
+			System.out.println("Id: " + exp_to_test.ID + " --> " + "Resultado = " + result);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
