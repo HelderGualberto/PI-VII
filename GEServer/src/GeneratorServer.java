@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import StandardObjects.Expression;
@@ -11,15 +12,15 @@ import StandardObjects.ExpressionResult;
 public class GeneratorServer {
 	
 	static public void get_expression(List<Expression> expressions) throws IOException{
-		
 		/*
+		
 		//CODIGO PARA SIMULAR A RECEPCAO DAS SERIES A PARTIRA DA ENTRADA VIA TERMINAL
 		byte[] buffer = new byte[500];
 		System.out.print("Enter the expression: ");
 		System.in.read(buffer, 0, 499);
 		String a = new String(buffer,StandardCharsets.UTF_8);
 		a = a.trim();
-		Expression exp = new Expression(a,1);
+		Expression exp = new Expression(a,"asd");
 		expressions.add(exp);
 		*/
 		
