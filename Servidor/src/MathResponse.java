@@ -91,9 +91,7 @@ public class MathResponse{
 		int qtdVender = 0;
 		double sucessCount = 0.0;
 		double unsucessCount = 0.0;
-		
-		PrintStream file = new PrintStream("d:/comp.txt");
-		
+				
 		int n = records.size()-1;
 		boolean isToBuy;
 		double priceAtual;
@@ -108,11 +106,9 @@ public class MathResponse{
 					saldoAnterior = saldoAtual;
 					
 					qtdAtual = (int)(saldoAtual/priceAtual);
-					//System.out.println("qtdAnt: " + qtdAtual);
 					saldoComprado = (qtdAtual * priceAtual);
 					saldoAtual = saldoAtual - saldoComprado;
 					qtdVender = (int)(qtdAtual/3);
-					//System.out.println("qtdVender: " + qtdVender);
 					modQtdVender = qtdAtual%3;
 				}
 				
@@ -152,9 +148,8 @@ public class MathResponse{
 			p = sucessCount/(unsucessCount+sucessCount);
 			
 		
-		System.out.println("Lucro liquido: " + this.lucroLiquido);
-		System.out.println("Taxa de sucesso: " + p);
-		file.close();
+		//System.out.println("Lucro liquido: " + this.lucroLiquido);
+		//System.out.println("Taxa de sucesso: " + p);
 		return p;
 	}
 
