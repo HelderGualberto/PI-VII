@@ -106,10 +106,13 @@ public class MathResponse{
 				 isToBuy = isToBuy(records,i,formula);
 				if ( isToBuy && saldoAtual > priceAtual ){
 					saldoAnterior = saldoAtual;
+					
 					qtdAtual = (int)(saldoAtual/priceAtual);
+					//System.out.println("qtdAnt: " + qtdAtual);
 					saldoComprado = (qtdAtual * priceAtual);
 					saldoAtual = saldoAtual - saldoComprado;
 					qtdVender = (int)(qtdAtual/3);
+					//System.out.println("qtdVender: " + qtdVender);
 					modQtdVender = qtdAtual%3;
 				}
 				
@@ -137,16 +140,13 @@ public class MathResponse{
 				qtdAtual = 0;
 				qtdVender = 0;
 				modQtdVender = 0;
-				
+				saldoVendido = 0;
 			}
-			
-			
-			
 		}
 		
 		double p =-1;
-		//System.out.println("Sucess: "+sucessCount);
-		//System.out.println("Unsucess: "+unsucessCount);
+		System.out.println("Sucess: "+sucessCount);
+		System.out.println("Unsucess: "+unsucessCount);
 		
 		if(sucessCount+unsucessCount > 0)
 			p = sucessCount/(unsucessCount+sucessCount);

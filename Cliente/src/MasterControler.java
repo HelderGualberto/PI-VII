@@ -53,7 +53,7 @@ public class MasterControler {
 		//Create a connection with the expression generator server
 		ExpressionReceiver expression_receiver;
 		do{
-			expression_receiver = new ExpressionReceiver(exp_list,"192.168.0.3");
+			expression_receiver = new ExpressionReceiver(exp_list,"192.168.36.157");
 		}while(!expression_receiver.isConnected());
 		expression_receiver.start();
 		OutputStream out_stream;

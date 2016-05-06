@@ -12,8 +12,8 @@ import StandardObjects.ExpressionResult;
 public class GeneratorServer {
 	
 	static public void get_expression(List<Expression> expressions) throws IOException{
-		/*
 		
+		/*
 		//CODIGO PARA SIMULAR A RECEPCAO DAS SERIES A PARTIRA DA ENTRADA VIA TERMINAL
 		byte[] buffer = new byte[500];
 		System.out.print("Enter the expression: ");
