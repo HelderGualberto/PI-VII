@@ -53,7 +53,7 @@ public class MasterControler {
 		//Create a connection with the expression generator server
 		ExpressionReceiver expression_receiver;
 		do{
-			expression_receiver = new ExpressionReceiver(exp_list,"192.168.0.3");
+			expression_receiver = new ExpressionReceiver(exp_list,"10.135.103.15");
 		}while(!expression_receiver.isConnected());
 		expression_receiver.start();
 		OutputStream out_stream;
@@ -95,7 +95,7 @@ public class MasterControler {
 			
 			//Send the expressions to the server calculator
 			while(!exp_list.isEmpty()){
-				
+				System.out.println(exp_list.size());
 				//send the expressions for all servers (slaves) connected, like a circular list
 				if(i_control.hasNext()){
 					Client c = i_control.next();
@@ -117,6 +117,7 @@ public class MasterControler {
 					data_out.writeObject(result_exp.remove());data_out.flush();
 				}
 			}
+			
 			if(c_control.isEmpty()){
 				break;
 			}
@@ -124,7 +125,16 @@ public class MasterControler {
 				out_stream = expression_receiver.connection.getOutputStream();
 				data_out = new ObjectOutputStream(out_stream);
 				data_out.writeObject(result_exp.remove());data_out.flush();
-			}			
+			}
+			
+			/*servers_available = server_discover.get_available_servers();
+			while(!servers_available.isEmpty()){
+				tmp = servers_available.remove(0);
+				//Send the parameters: CSV path, Host IP, Port, List of result expressions
+				Client client = new Client(tmp.ip_address.getHostAddress().toString(),10000,result_exp);
+				c_control.add(client);
+				client.start();
+			}*/
 		}
 	}
 }
