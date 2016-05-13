@@ -83,7 +83,12 @@ public class MathResponse{
 	}
     
     public double testFormula(String formula) throws Exception{
-		double saldoAtual = saldoInicial;
+    	
+    	//Quantidade possivel de vezes que pode ocorrer as regras: 
+    	//(Tamanho da serie - 5) - Numero de dias sem efetuar compra
+    	//Dias em que as acoes estao sendo vendidas
+		
+    	double saldoAtual = saldoInicial;
 		double saldoComprado = 0;
 		double saldoVendido = 0;
 		double saldoAnterior = 0;
@@ -93,6 +98,8 @@ public class MathResponse{
 		double unsucessCount = 0.0;
 				
 		int n = records.size()-1;
+		int quantidadeMax = (records.size() - 5)/4;
+				
 		boolean isToBuy;
 		double priceAtual;
 		int modQtdVender = 0;
@@ -139,14 +146,16 @@ public class MathResponse{
 				saldoVendido = 0;
 			}
 		}
-		
-		double p =-1;
+				
+		double p =0;
 		//System.out.println("Sucess: "+sucessCount);
 		//System.out.println("Unsucess: "+unsucessCount);
 		
-		if(sucessCount+unsucessCount > 0)
+		if(sucessCount+unsucessCount > 0){
 			p = sucessCount/(unsucessCount+sucessCount);
-			
+			double vezesAconteceu = (unsucessCount+sucessCount)/quantidadeMax;
+			p *= vezesAconteceu;
+ 		}
 		
 		//System.out.println("Lucro liquido: " + this.lucroLiquido);
 		//System.out.println("Taxa de sucesso: " + p);
